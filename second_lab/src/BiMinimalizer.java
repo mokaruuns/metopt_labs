@@ -1,18 +1,29 @@
-import java.util.function.BiFunction;
-import java.util.function.ToDoubleBiFunction;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
 public abstract class BiMinimalizer {
 
-    final double delta = 0.000001;
+    private final int dimensions;
+    final private double DELTA = 0.000001;
 
-    BiFunction<Double, Double, Double> function;
-    BiFunction<Double, Double, Double> dFunctionDY;
-    BiFunction<Double, Double, Double> dFunctionDX;
+    Function<List<Double>, Double> function;
+    List<Function<List<Double>, Double>> gradient;
 
-    BiMinimalizer(BiFunction<Double, Double, Double> function) {
+    BiMinimalizer(Function<List<Double>, Double> function, int dimensions) {
         this.function = function;
-        dFunctionDX = (xDouble, yDouble) -> (function.apply(xDouble + delta, yDouble) - function.apply(xDouble, yDouble)) / delta;
-        dFunctionDY = (xDouble, yDouble) -> (function.apply(xDouble, yDouble + delta) - function.apply(xDouble, yDouble)) / delta;
+        this.dimensions = dimensions;
+        gradient = new ArrayList<>();
+        for (int i = 0; i < this.dimensions; i++) {
+            int finalI = i;
+            gradient.add(list -> {
+                List<Double> diffed = new ArrayList<>(list);
+                diffed.set(finalI, diffed.get(finalI) + DELTA);
+                return (function.apply(diffed) - function.apply(list)) / DELTA;
+            });
+        }
     }
+
+    abstract double minimalize();
 
 }
