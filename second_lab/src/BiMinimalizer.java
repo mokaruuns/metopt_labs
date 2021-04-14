@@ -4,11 +4,31 @@ import java.util.function.Function;
 
 public abstract class BiMinimalizer {
 
-    private final int dimensions;
+    protected int dimensions;
     final private double DELTA = 0.000001;
 
-    Function<List<Double>, Double> function;
-    List<Function<List<Double>, Double>> gradient;
+    protected Function<List<Double>, Double> function;
+    protected List<Function<List<Double>, Double>> gradient;
+
+    void checkDim(List<Double> list) {
+        if (list.size() != dimensions) {
+            throw new IllegalArgumentException("Argument list has to have correct dimension: " + dimensions + " instead of " + list.size());
+        }
+    }
+
+    double apply(List<Double> list) {
+        checkDim(list);
+        return function.apply(list);
+    }
+
+    List<Double> countGradient(List<Double> list) {
+        checkDim(list);
+        List<Double> ans = new ArrayList<>();
+        for (int i = 0; i < dimensions; i++) {
+            ans.add(gradient.get(i).apply(list));
+        }
+        return ans;
+    }
 
     BiMinimalizer(Function<List<Double>, Double> function, int dimensions) {
         this.function = function;
