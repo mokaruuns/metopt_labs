@@ -44,6 +44,14 @@ public abstract class BiMinimalizer {
         }
     }
 
-    abstract double minimalize();
+    abstract List<Double> minimalize();
 
+    public static void main(String[] args) {
+        Function<List<Double>, Double> unimodal = f -> 2 * f.get(0) * f.get(0) + 3 * f.get(1) * f.get(1) + f.get(0) + 1;
+        BiMinimalizer biMinimalizer = new GradientDescent(unimodal, 2);
+        List<Double> x = biMinimalizer.minimalize();
+        for (double x_i : x) {
+            System.out.println(x_i);
+        }
+    }
 }
