@@ -16,22 +16,26 @@ public class SteepestDescent extends BiMinimalizer {
     private List<Double> GoldenRatio(double eps, List<Double> a, List<Double> b) {
         double t1 = 0.381966, t2 = 1 - t1;
         List<Double> x1 = new ArrayList<>();
-        x1.add(a.get(0) + (b.get(0) - a.get(0)) * t1);
-        x1.add(a.get(1) + (b.get(1) - a.get(1)) * t1);
         List<Double> x2 = new ArrayList<>();
-        x2.add(a.get(0) + (b.get(0) - a.get(0)) * t2);
-        x2.add(a.get(1) + (b.get(1) - a.get(1)) * t2);
+        for(int i = 0; i < dimensions; i++){
+            x1.add(a.get(i) + (b.get(i) - a.get(i)) * t1);
+            x2.add(a.get(i) + (b.get(i) - a.get(i)) * t2);
+        }
 
         List<Double> temp1 = new ArrayList<>();
-        temp1.add(x1.get(0) - eps);
-        temp1.add(x1.get(1) - eps);
         List<Double> temp2 = new ArrayList<>();
-        temp2.add(x2.get(0) + eps);
-        temp2.add(x2.get(1) + eps);
+        for(int i = 0; i < dimensions; i++){
+            temp1.add(x1.get(i) - eps);
+            temp2.add(x2.get(0) + eps);
+        }
         double f1 = apply(temp1);
         double f2 = apply(temp2);
-
-        while (Math.sqrt((b.get(0) - a.get(0)) * (b.get(0) - a.get(0)) + (b.get(1) - a.get(1)) * (b.get(1) - a.get(1))) > eps) {
+        double res = 0;
+        for(int i = 0; i < dimensions; i++)
+        {
+            res += (b.get(i) - a.get(i)) * (b.get(i) - a.get(i));
+        }
+        while (Math.sqrt(res) > eps) {
             if (f1 < f2) {
                 b = x2;
                 x2 = x1;
@@ -56,6 +60,10 @@ public class SteepestDescent extends BiMinimalizer {
                 x2.add(temp_x2);
                 List<Double> temp = List.copyOf(x2);
                 f2 = apply(temp);
+            }
+            for(int i = 0; i < dimensions; i++)
+            {
+                res += (b.get(i) - a.get(i)) * (b.get(i) - a.get(i));
             }
         }
         List<Double> ans = new ArrayList<>();
