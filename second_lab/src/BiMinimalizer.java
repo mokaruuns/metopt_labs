@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public abstract class BiMinimalizer {
@@ -118,6 +117,7 @@ public abstract class BiMinimalizer {
         System.out.println(biMinimalizer.apply(List.of(0.0, 0.0)));
         System.out.println(biMinimalizer.countGradient(List.of(0.0, 0.0)));
         List<Double> x = biMinimalizer.minimalize();
+        System.out.println(biMinimalizer.apply(x));
         for (double x_i : x) {
             System.out.println(x_i);
         }
@@ -125,10 +125,10 @@ public abstract class BiMinimalizer {
     }
 
     public static void main(String[] args) {
-        //4 * x * x + 3 * y * y + 4 * y * x + 5 * x + 6 * y + 9
-        List<List<Double>> a = List.of(List.of(8.0, 4.0), List.of(4.0, 6.0));
-        List<Double> b = List.of(5.0, 6.0);
-        double c = 9;
+        //
+        List<List<Double>> a = List.of(List.of(128.0, 126.0), List.of(126.0, 128.0));
+        List<Double> b = List.of(-10.0, 30.0);
+        double c = 13.0;
         printMinimalizer(new GradientDescent(a, b, c, 2));
         printMinimalizer(new SteepestDescent(a, b, c, 2));
         printMinimalizer(new FletcherReeves(a, b, c, 2));

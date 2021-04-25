@@ -27,6 +27,9 @@ public class GradientDescent extends BiMinimalizer {
             if (dist < eps * eps && Math.abs(apply(startPoint) - apply(nextPoint)) < eps) {
                 stop = true;
             }
+            if (apply(startPoint) < apply(nextPoint)) {
+                lambda /= 2;
+            }
             startPoint = new ArrayList<>(nextPoint);
             iter += 1;
         }
