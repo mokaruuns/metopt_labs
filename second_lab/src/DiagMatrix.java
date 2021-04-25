@@ -26,8 +26,19 @@ public class DiagMatrix implements Matrix {
         return new DiagMatrix(diag.mulOnNumber(number).getVector());
     }
 
+
+
     @Override
     public double get(int i, int j) {
         return 0;
+    }
+
+    @Override
+    public double apply(NumberVector vector) {
+        double ans = 0;
+        for (int i = 0; i < diag.size(); i++) {
+            ans += vector.get(i) * vector.get(i) * diag.get(i);
+        }
+        return ans;
     }
 }
