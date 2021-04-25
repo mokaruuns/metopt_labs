@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,9 +102,21 @@ public abstract class BiMinimalizer {
         return ans;
     }
 
-//    List<List<Double>> generateMatrix(int conditionality, int dimensions) {
-//
-//    }
+    static List<List<Double>> generateMatrix(int conditionality, int dimensions) {
+        List<List<Double>> result = new ArrayList<>();
+        for (int i = 0; i < dimensions; i++) {
+            result.add(new ArrayList<>());
+            for (int j = 0; j < dimensions; j++) {
+                if (i != j) {
+                    result.get(i).add(0.0);
+                } else {
+                    result.get(i).add((double) conditionality);
+                }
+            }
+        }
+        result.get(0).set(0, 1.0);
+        return result;
+    }
 
     BiMinimalizer(List<List<Double>> a, List<Double> b, double c, int dimensions) {
         this.a = a;
@@ -113,25 +127,30 @@ public abstract class BiMinimalizer {
 
     abstract List<Double> minimalize();
 
-    public static void printMinimalizer(BiMinimalizer biMinimalizer) {
-        System.out.println(biMinimalizer.apply(List.of(0.0, 0.0)));
-        System.out.println(biMinimalizer.countGradient(List.of(0.0, 0.0)));
+    public static void printMinimalizer(BiMinimalizer biMinimalizer, int dimensions) {
+//        System.out.println(biMinimalizer.apply(Collections.nCopies(dimensions, 1.0)));
+//        System.out.println(biMinimalizer.countGradient(Collections.nCopies(dimensions, 1.0)));
         List<Double> x = biMinimalizer.minimalize();
         System.out.println(biMinimalizer.apply(x));
-        for (double x_i : x) {
-            System.out.println(x_i);
-        }
+//        for (double x_i : x) {
+//            System.out.println(x_i);
+//        }
         System.out.println();
     }
 
     public static void main(String[] args) {
-        //
-        List<List<Double>> a = List.of(List.of(128.0, 126.0), List.of(126.0, 128.0));
-        List<Double> b = List.of(-10.0, 30.0);
-        double c = 13.0;
-        printMinimalizer(new GradientDescent(a, b, c, 2));
-        printMinimalizer(new SteepestDescent(a, b, c, 2));
-        printMinimalizer(new FletcherReeves(a, b, c, 2));
-
+        List<Integer> dimensions = List.of(10, 100, 100, 1000);
+        List<Integer> conditionalities = List.of(10, 100, 100, 1000);
+        for (Integer dimension : dimensions) {
+            for (Integer conditionality : conditionalities) {
+                System.out.println("d = " + dimension + ", c = " + conditionality);
+                List<List<Double>> a = generateMatrix(conditionality, dimension);
+                List<Double> b = Collections.nCopies(dimension, 0.0);
+                double c = 0;
+                printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
+                printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
+                printMinimalizer(new FletcherReeves(a, b, c, dimension), dimension);
+            }
+        }
     }
 }

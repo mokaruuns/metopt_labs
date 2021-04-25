@@ -55,11 +55,6 @@ public abstract class Minimalizer {
         return rightBorder - leftBorder;
     }
 
-    protected double printBorders(double leftBorder, double rightBorder, double lastLength, double x1, double fx1) {
-        String text = leftBorder + " " + rightBorder + " " + lastLength / (rightBorder - leftBorder) + " " + x1 + " " + fx1;
-        return rightBorder - leftBorder;
-    }
-
 
     private void checkBorders(double x) {
         if (x < leftBorder || rightBorder < x) {

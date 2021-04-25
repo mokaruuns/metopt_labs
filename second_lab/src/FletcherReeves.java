@@ -14,7 +14,7 @@ public class FletcherReeves extends BiMinimalizer {
 
 
     private List<Double> fletcherReevesMethod() {
-        List<Double> xk = Collections.nCopies(dimensions, 0.0);
+        List<Double> xk = Collections.nCopies(dimensions, 1.0);
         List<Double> gradK = countGradient(xk);
         List<Double> pk = mulOnNumber(gradK, -1);
         double alfak = 0;
@@ -28,6 +28,7 @@ public class FletcherReeves extends BiMinimalizer {
             pk = sum(mulOnNumber(gradK1, -1), mulOnNumber(pk, betak));
             gradK = gradK1;
         }
+        System.out.println(dimensions);
         return xk;
     }
 }
