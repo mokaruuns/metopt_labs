@@ -21,8 +21,21 @@ public class UsualMatrix implements Matrix {
                 map(NumberVector::getVector).collect(Collectors.toList()));
     }
 
+
+
     @Override
     public double get(int i, int j) {
         return matrix.get(i).get(j);
+    }
+
+    @Override
+    public double apply(NumberVector vector) {
+        double ans = 0;
+        for (int i = 0; i < matrix.size(); i++) {
+            for (int j = 0; j < matrix.size(); j++) {
+                ans += vector.get(i) * vector.get(j) * get(i, j) / 2;
+            }
+        }
+        return ans;
     }
 }

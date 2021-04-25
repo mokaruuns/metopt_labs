@@ -8,4 +8,6 @@ public interface Matrix {
 
     public double get(int i, int j);
 
+    public double apply(NumberVector vector);
+
 }

@@ -36,12 +36,9 @@ public abstract class BiMinimalizer {
 
     double apply(List<Double> list) {
         checkDim(list);
-        double ans = c;
+        double ans = c + a.apply(new NumberVector(list));
         for (int i = 0; i < dimensions; i++) {
             ans += list.get(i) * b.get(i);
-            for (int j = 0; j < dimensions; j++) {
-                ans += list.get(i) * list.get(j) * a.get(i, j) / 2;
-            }
         }
         return ans;
     }
