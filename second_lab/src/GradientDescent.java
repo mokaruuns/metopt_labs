@@ -1,10 +1,11 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
+
 
 public class GradientDescent extends BiMinimalizer {
-    public GradientDescent(Function<List<Double>, Double> function, int dimensions) {
-        super(function, dimensions);
+    public GradientDescent(List<List<Double>> A, List<Double> B, Double C, int dimensions) {
+        super(A, B, C, dimensions);
     }
 
     @Override
@@ -14,29 +15,25 @@ public class GradientDescent extends BiMinimalizer {
 
     private List<Double> gradientDescent() {
         Double eps = 1e-7;
-        List<Double> args1 = new ArrayList<Double>();
-        List<Double> startPoint = new ArrayList<Double>();
-        for (int i = 0; i < dimensions; i++) {
-            startPoint.add(1.0);
-            args1.add(1.0);
-        }
+        ArrayList<Double> nextPoint = new ArrayList<>(Collections.nCopies(dimensions, 1.0));
+        ArrayList<Double> startPoint = new ArrayList<>(Collections.nCopies(dimensions, 1.0));
         boolean stop = false;
         Double lambda = 0.01;
         int iter = 0;
         while (!stop) {
             List<Double> grad = countGradient(startPoint);
             for (int i = 0; i < dimensions; i++) {
-                args1.set(i, startPoint.get(i) - grad.get(i) * lambda);
+                nextPoint.set(i, startPoint.get(i) - grad.get(i) * lambda);
             }
-            Double dist = 0.0;
-            for (int i = 0; i < args1.size(); i++) {
-                dist += Math.pow(args1.get(i) - startPoint.get(i), 2);
+            double dist = 0.0;
+            for (int i = 0; i < nextPoint.size(); i++) {
+                dist += Math.pow(nextPoint.get(i) - startPoint.get(i), 2);
             }
-            if (dist < eps * eps && Math.abs(function.apply(startPoint) - function.apply(args1)) < eps) {
+            if (dist < eps * eps && Math.abs(apply(startPoint) - apply(nextPoint)) < eps) {
                 stop = true;
             }
 
-            startPoint = new ArrayList(args1);
+            startPoint = new ArrayList<>(nextPoint);
             iter += 1;
 
         }

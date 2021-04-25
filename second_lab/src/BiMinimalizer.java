@@ -62,7 +62,8 @@ public abstract class BiMinimalizer {
     }
 
     protected double mul(List<Double> l, List<Double> r) {
-        checkDim(l); checkDim(r);
+        checkDim(l);
+        checkDim(r);
         double ans = 0;
         for (int i = 0; i < dimensions; i++) {
             ans += l.get(i) * r.get(i);
@@ -71,7 +72,8 @@ public abstract class BiMinimalizer {
     }
 
     protected List<Double> sum(List<Double> l, List<Double> r) {
-        checkDim(l); checkDim(r);
+        checkDim(l);
+        checkDim(r);
         List<Double> ans = new ArrayList<>();
         for (int i = 0; i < dimensions; i++) {
             ans.add(l.get(i) + r.get(i));
@@ -105,8 +107,7 @@ public abstract class BiMinimalizer {
         List<List<Double>> a = List.of(List.of(8.0, 4.0), List.of(4.0, 6.0));
         List<Double> b = List.of(5.0, 6.0);
         double c = 9;
-        Function<List<Double>, Double> unimodal = f -> 2 * f.get(0) * f.get(0) + 3 * f.get(1) * f.get(1) + f.get(0) + 1;
-        BiMinimalizer biMinimalizer = new FletcherReeves(a, b, c, 2);
+        BiMinimalizer biMinimalizer = new SteepestDescent(a, b, c, 2);
         System.out.println(biMinimalizer.apply(List.of(1.0, 1.0)));
         System.out.println(biMinimalizer.countGradient(List.of(1.0, 1.0)));
         List<Double> x = biMinimalizer.minimalize();
