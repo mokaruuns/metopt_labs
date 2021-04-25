@@ -70,7 +70,7 @@ public abstract class BiMinimalizer {
         return ans;
     }
 
-    protected double dist(List<Double> l, List<Double> r) {
+    protected double dist(NumberVector l, NumberVector r) {
         double dist = 0.0;
         for (int i = 0; i < dimensions; i++) {
             dist += Math.pow(l.get(i) - r.get(i), 2);
@@ -90,20 +90,10 @@ public abstract class BiMinimalizer {
         return ans;
     }
 
-    static List<List<Double>> generateMatrix(int conditionality, int dimensions) {
-        List<List<Double>> result = new ArrayList<>();
-        for (int i = 0; i < dimensions; i++) {
-            result.add(new ArrayList<>());
-            for (int j = 0; j < dimensions; j++) {
-                if (i != j) {
-                    result.get(i).add(0.0);
-                } else {
-                    result.get(i).add((double) conditionality);
-                }
-            }
-        }
-        result.get(0).set(0, 1.0);
-        return result;
+    static List<Double> generateMatrix(int conditionality, int dimensions) {
+        List<Double> temp = new ArrayList<>(Collections.nCopies(dimensions - 1, 1.0));
+        temp.add((double) conditionality);
+        return temp;
     }
 
     BiMinimalizer(List<List<Double>> a, List<Double> b, double c, int dimensions) {
@@ -134,16 +124,13 @@ public abstract class BiMinimalizer {
     }
 
     public static void main(String[] args) {
-        List<Integer> dimensions = List.of(10, 100, 100, 1000);
-        List<Integer> conditionalities = List.of(10, 100, 100, 1000);
+        List<Integer> dimensions = List.of(10, 100, 1000, 10000);
+        List<Integer> conditionalities = List.of(10, 100, 1000);
         for (Integer dimension : dimensions) {
             for (Integer conditionality : conditionalities) {
-                if (dimension == 100) {
-                    int a = 1;
-                }
                 System.out.println("d = " + dimension + ", c = " + conditionality);
-                List<List<Double>> a = generateMatrix(conditionality, dimension);
-                List<Double> b = Collections.nCopies(dimension, 0.0);
+                Matrix a = new DiagMatrix(generateMatrix(conditionality, dimension));
+                NumberVector b = new NumberVector(Collections.nCopies(dimension, 0.0));
                 double c = 0;
                 printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
                 printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);

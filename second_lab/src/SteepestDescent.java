@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.function.Function;
 
 public class SteepestDescent extends BiMinimalizer {
-    public SteepestDescent(List<List<Double>> A, List<Double> B, Double C, int dimensions) {
+    SteepestDescent(List<List<Double>> A, List<Double> B, Double C, int dimensions) {
         super(A, B, C, dimensions);
+    }
+
+    SteepestDescent(Matrix a, NumberVector b, double c, int dimensions) {
+        super(a, b, c, dimensions);
     }
 
     @Override
@@ -16,27 +20,27 @@ public class SteepestDescent extends BiMinimalizer {
 
     private List<Double> steepestDescent() {
         Double eps = 1e-7;
-        List<Double> nextPoint;
-        List<Double> startPoint = Collections.nCopies(dimensions, 1.0);
+        NumberVector nextPoint;
+        NumberVector startPoint = new NumberVector(Collections.nCopies(dimensions, 1.0));
         boolean stop = false;
         double lambda = 0.01;
         int iter = 0;
         Minimalizer minimalizer;
         while (!stop) {
-            List<Double> grad = countGradient(startPoint);
-            List<Double> finalStartPoint = startPoint;
-            Function<Double, Double> function = l -> apply(sum(finalStartPoint, mulOnNumber(grad, -l)));
+            NumberVector grad = countGradient(startPoint);
+            NumberVector finalStartPoint = startPoint;
+            Function<Double, Double> function = l -> apply(finalStartPoint.addVector(grad.mulOnNumber(-l)).getVector());
             minimalizer = new GoldenRatioMinimalizer(function, 0, 1);
-            lambda = minimalizer.minimalize(0.0001);
-            nextPoint = sum(startPoint, mulOnNumber(grad, -lambda));
-            double dist = dist(nextPoint, startPoint);
-            if (dist < eps * eps && Math.abs(apply(startPoint) - apply(nextPoint)) < eps) {
+            lambda = minimalizer.minimalize(0.000001);
+            nextPoint = startPoint.addVector(grad.mulOnNumber(-lambda));
+            double dist = Math.sqrt(nextPoint.mulOnVector(startPoint));
+            if (dist < eps * eps && Math.abs(apply(startPoint.getVector()) - apply(nextPoint.getVector())) < eps) {
                 stop = true;
             }
-            startPoint = new ArrayList<>(nextPoint);
+            startPoint = nextPoint;
             iter += 1;
         }
         System.out.println(iter);
-        return startPoint;
+        return startPoint.getVector();
     }
 }

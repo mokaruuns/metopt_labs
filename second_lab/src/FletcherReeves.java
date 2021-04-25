@@ -6,6 +6,9 @@ public class FletcherReeves extends BiMinimalizer {
     FletcherReeves(List<List<Double>> a, List<Double> b, double c, int dimensions) {
         super(a, b, c, dimensions);
     }
+    FletcherReeves(Matrix a, NumberVector b, double c, int dimensions) {
+        super(a, b, c, dimensions);
+    }
 
     @Override
     List<Double> minimalize() {

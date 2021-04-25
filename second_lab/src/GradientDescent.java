@@ -4,8 +4,11 @@ import java.util.List;
 
 
 public class GradientDescent extends BiMinimalizer {
-    public GradientDescent(List<List<Double>> A, List<Double> B, Double C, int dimensions) {
+    GradientDescent(List<List<Double>> A, List<Double> B, Double C, int dimensions) {
         super(A, B, C, dimensions);
+    }
+    GradientDescent(Matrix a, NumberVector b, double c, int dimensions) {
+        super(a, b, c, dimensions);
     }
 
     @Override
@@ -15,25 +18,25 @@ public class GradientDescent extends BiMinimalizer {
 
     private List<Double> gradientDescent() {
         Double eps = 1e-7;
-        List<Double> nextPoint;
-        List<Double> startPoint = Collections.nCopies(dimensions, 1.0);
+        NumberVector nextPoint;
+        NumberVector startPoint = new NumberVector(Collections.nCopies(dimensions, 1.0));
         boolean stop = false;
         double lambda = 1;
         int iter = 0;
         while (!stop) {
-            List<Double> grad = countGradient(startPoint);
-            nextPoint = sum(startPoint, mulOnNumber(grad, -lambda));
+            NumberVector grad = countGradient(startPoint);
+            nextPoint = startPoint.addVector(grad.mulOnNumber(-lambda));
             double dist = dist(nextPoint, startPoint);
-            if (dist < eps * eps && Math.abs(apply(startPoint) - apply(nextPoint)) < eps) {
+            if (dist < eps * eps && Math.abs(apply(startPoint.getVector()) - apply(nextPoint.getVector())) < eps) {
                 stop = true;
             }
-            if (apply(startPoint) < apply(nextPoint)) {
+            if (apply(startPoint.getVector()) < apply(nextPoint.getVector())) {
                 lambda /= 2;
             }
-            startPoint = new ArrayList<>(nextPoint);
+            startPoint = nextPoint;
             iter += 1;
         }
         System.out.println(iter);
-        return startPoint;
+        return startPoint.getVector();
     }
 }
