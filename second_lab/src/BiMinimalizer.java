@@ -9,8 +9,8 @@ public abstract class BiMinimalizer {
     protected int dimensions;
     final private double DELTA = 0.000001;
 
-    protected List<List<Double>> a;
-    protected List<Double> b;
+    protected Matrix a;
+    protected NumberVector b;
     protected double c;
 
     void checkMatrix(List<List<Double>> function, int dimensions) {
@@ -40,26 +40,14 @@ public abstract class BiMinimalizer {
         for (int i = 0; i < dimensions; i++) {
             ans += list.get(i) * b.get(i);
             for (int j = 0; j < dimensions; j++) {
-                ans += list.get(i) * list.get(j) * a.get(i).get(j) / 2;
+                ans += list.get(i) * list.get(j) * a.get(i, j) / 2;
             }
         }
         return ans;
     }
 
-    protected List<Double> matrixVectorMul(List<List<Double>> matrix, List<Double> vector) {
-        return matrix.stream().map(list -> mul(list, vector)).collect(Collectors.toList());
-    }
-
-    protected double aMod(List<Double> l) {
-        return mul(matrixVectorMul(a, l), l);
-    }
-
-    protected double mod(List<Double> l) {
-        return Math.sqrt(mul(l, l));
-    }
-
-    protected List<Double> mulOnNumber(List<Double> l, double r) {
-        return l.stream().map(d -> r * d).collect(Collectors.toList());
+    protected double mod(NumberVector l) {
+        return Math.sqrt(l.mulOnVector(l));
     }
 
     protected double mul(List<Double> l, List<Double> r) {
@@ -90,14 +78,14 @@ public abstract class BiMinimalizer {
         return dist;
     }
 
-    List<Double> countGradient(List<Double> list) {
-        return sum(matrixVectorMul(a, list), b);
+    NumberVector countGradient(NumberVector list) {
+        return a.mulOnVector(list).addVector(b);
     }
 
     private double partDiff(List<Double> list, int i) {
         double ans = b.get(i);
         for (int j = 0; j < dimensions; j++) {
-            ans += a.get(i).get(j) * list.get(j);
+            ans += a.get(i, j) * list.get(j);
         }
         return ans;
     }
@@ -119,6 +107,13 @@ public abstract class BiMinimalizer {
     }
 
     BiMinimalizer(List<List<Double>> a, List<Double> b, double c, int dimensions) {
+        this.a = new UsualMatrix(a);
+        this.b = new NumberVector(b);
+        this.c = c;
+        this.dimensions = dimensions;
+    }
+
+    BiMinimalizer(Matrix a, NumberVector b, double c, int dimensions) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -143,6 +138,9 @@ public abstract class BiMinimalizer {
         List<Integer> conditionalities = List.of(10, 100, 100, 1000);
         for (Integer dimension : dimensions) {
             for (Integer conditionality : conditionalities) {
+                if (dimension == 100) {
+                    int a = 1;
+                }
                 System.out.println("d = " + dimension + ", c = " + conditionality);
                 List<List<Double>> a = generateMatrix(conditionality, dimension);
                 List<Double> b = Collections.nCopies(dimension, 0.0);

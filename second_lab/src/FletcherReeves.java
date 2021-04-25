@@ -14,21 +14,22 @@ public class FletcherReeves extends BiMinimalizer {
 
 
     private List<Double> fletcherReevesMethod() {
-        List<Double> xk = Collections.nCopies(dimensions, 1.0);
-        List<Double> gradK = countGradient(xk);
-        List<Double> pk = mulOnNumber(gradK, -1);
+        double eps = 1e-7;
+        NumberVector xk = new NumberVector(Collections.nCopies(dimensions, 1.0));
+        NumberVector gradK = countGradient(xk);
+        NumberVector pk = gradK.mulOnNumber(-1);
         double alfak = 0;
         double betak = 0;
-        for (int i = 0; i < dimensions; i++) {
-            List<Double> apk = matrixVectorMul(a, pk);
-            alfak = mul(gradK, gradK) / mul(apk, pk);
-            xk = sum(xk, mulOnNumber(pk, alfak));
-            List<Double> gradK1 = sum(gradK, mulOnNumber(apk, alfak));
-            betak = mul(gradK1, gradK1) / mul(gradK, gradK);
-            pk = sum(mulOnNumber(gradK1, -1), mulOnNumber(pk, betak));
+        for (int i = 0; i < dimensions && mod(gradK) > eps; i++) {
+            NumberVector apk = a.mulOnVector(pk);
+            alfak = gradK.mulOnVector(gradK) / apk.mulOnVector(pk);
+            xk = xk.addVector(pk.mulOnNumber(alfak));
+            NumberVector gradK1 = gradK.addVector(apk.mulOnNumber(alfak));//sum(gradK, mulOnNumber(apk, alfak));
+            betak = gradK1.mulOnVector(gradK1) / gradK.mulOnVector(gradK1);
+            pk = gradK1.mulOnNumber(-1).addVector(pk.mulOnNumber(betak));//sum(mulOnNumber(gradK1, -1), mulOnNumber(pk, betak));
             gradK = gradK1;
         }
         System.out.println(dimensions);
-        return xk;
+        return xk.getVector();
     }
 }
