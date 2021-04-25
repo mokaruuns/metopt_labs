@@ -13,86 +13,53 @@ public class SteepestDescent extends BiMinimalizer {
         return steepestDescent();
     }
 
-    private List<Double> GoldenRatio(double eps, List<Double> a, List<Double> b) {
-        double t1 = 0.381966, t2 = 1 - t1;
-        List<Double> x1 = new ArrayList<>();
-        List<Double> x2 = new ArrayList<>();
-        for(int i = 0; i < dimensions; i++){
-            x1.add(a.get(i) + (b.get(i) - a.get(i)) * t1);
-            x2.add(a.get(i) + (b.get(i) - a.get(i)) * t2);
-        }
-
-        List<Double> temp1 = new ArrayList<>();
-        List<Double> temp2 = new ArrayList<>();
-        for(int i = 0; i < dimensions; i++){
-            temp1.add(x1.get(i) - eps);
-            temp2.add(x2.get(i) + eps);
-        }
-        double f1 = apply(temp1);
-        double f2 = apply(temp2);
-        double res = 0;
-        for(int i = 0; i < dimensions; i++)
-        {
-            res += (b.get(i) - a.get(i)) * (b.get(i) - a.get(i));
-        }
-        while (Math.sqrt(res) > eps) {
-            if (f1 < f2) {
+    private List<Double> goldenRatioMethod(double epsilon, List<Double> leftBorder, List<Double> rightBorder) {
+        int amountApplying = 1;
+        final double tau = (Math.sqrt(5) - 1) / 2;
+        List<Double> a = leftBorder;
+        List<Double> b = rightBorder;
+        List<Double> x1 = sum(a, mulOnNumber(sum(b, mulOnNumber(a, -1.0)), (1.0 - tau)));
+        List<Double> x2 = sum(a, mulOnNumber(sum(b, mulOnNumber(a, -1)), tau));
+        double fx1 = apply(x1);
+        double fx2 = apply(x2);
+        double currentEpsilon = dist(b, a);
+        while (currentEpsilon > epsilon * epsilon) {
+            amountApplying++;
+            if (fx1 < fx2) {
                 b = x2;
                 x2 = x1;
-                f2 = f1;
-                for (int i = 0; i < a.size(); i++){
-                    x1.set(i, a.get(i) + (b.get(i) - a.get(i)) * t1);
-                }
-                f1 = apply(x1);
+                x1 = sum(a, mulOnNumber(sum(b, mulOnNumber(a, -1.0)), (1.0 - tau)));
+                fx2 = fx1;
+                fx1 = apply(x1);
             } else {
                 a = x1;
                 x1 = x2;
-                f1 = f2;
-                for (int i = 0; i < a.size(); i++){
-                    x2.set(i, a.get(i) + (b.get(i) - a.get(i)) * t2);
-                }
-                f2 = apply(x2);
+                fx1 = fx2;
+                x2 = sum(a, mulOnNumber(sum(b, mulOnNumber(a, -1)), tau));
+                fx2 = apply(x2);
             }
-            res = 0;
-            for(int i = 0; i < dimensions; i++)
-            {
-                res += (b.get(i) - a.get(i)) * (b.get(i) - a.get(i));
-            }
+            currentEpsilon *= tau;
         }
-        List<Double> ans = new ArrayList<>();
-        for(int i = 0; i < dimensions; i++)
-            ans.add((a.get(i) + b.get(i)) / 2);
-        return ans;
+        return mulOnNumber(sum(a, b), 0.5);
     }
 
     private List<Double> steepestDescent() {
         double eps = 1e-7;
         boolean stop = false;
         int iter = 0;
-        ArrayList<Double> args1 = new ArrayList<>(Collections.nCopies(dimensions, 1.0));
-
+        ArrayList<Double> startPoint = new ArrayList<>(Collections.nCopies(dimensions, 0.0));
         while (!stop) {
-            List<Double> grad = countGradient(args1);
-            List<Double> minusGrad = new ArrayList<>(List.copyOf(grad));
-            for (int i = 0; i < minusGrad.size(); i++) {
-                minusGrad.set(i, minusGrad.get(i) * (-1));
-            }
-            List<Double> point = GoldenRatio(eps, args1, minusGrad);
-            List<Double> args2 = List.copyOf(point);
-            double dist = 0.0;
-            for (int i = 0; i < args1.size(); i++) {
-                dist += Math.pow((args2.get(i) - args1.get(i)), 2);
-            }
-
-            if (dist < eps * eps && Math.abs(apply(args1) - apply(args2)) < eps) {
+            List<Double> grad = countGradient(startPoint);
+            List<Double> minusGrad = mulOnNumber(grad, -1);
+            List<Double> middlePoint = goldenRatioMethod(eps, startPoint, minusGrad);
+            List<Double> nextPoint = List.copyOf(middlePoint);
+            double dist = dist(nextPoint, startPoint);
+            if (dist < eps * eps && Math.abs(apply(startPoint) - apply(nextPoint)) < eps) {
                 stop = true;
             }
-
-            args1 = new ArrayList<>(args2);
+            startPoint = new ArrayList<>(nextPoint);
             iter += 1;
         }
-
-        return args1;
+        return startPoint;
     }
-
 }

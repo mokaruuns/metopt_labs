@@ -15,27 +15,20 @@ public class GradientDescent extends BiMinimalizer {
 
     private List<Double> gradientDescent() {
         Double eps = 1e-7;
-        ArrayList<Double> nextPoint = new ArrayList<>(Collections.nCopies(dimensions, 1.0));
-        ArrayList<Double> startPoint = new ArrayList<>(Collections.nCopies(dimensions, 1.0));
+        List<Double> nextPoint;
+        List<Double> startPoint = Collections.nCopies(dimensions, 0.0);
         boolean stop = false;
-        Double lambda = 0.01;
+        double lambda = 0.01;
         int iter = 0;
         while (!stop) {
             List<Double> grad = countGradient(startPoint);
-            for (int i = 0; i < dimensions; i++) {
-                nextPoint.set(i, startPoint.get(i) - grad.get(i) * lambda);
-            }
-            double dist = 0.0;
-            for (int i = 0; i < nextPoint.size(); i++) {
-                dist += Math.pow(nextPoint.get(i) - startPoint.get(i), 2);
-            }
+            nextPoint = sum(startPoint, mulOnNumber(grad, -lambda));
+            double dist = dist(nextPoint, startPoint);
             if (dist < eps * eps && Math.abs(apply(startPoint) - apply(nextPoint)) < eps) {
                 stop = true;
             }
-
             startPoint = new ArrayList<>(nextPoint);
             iter += 1;
-
         }
         return startPoint;
     }

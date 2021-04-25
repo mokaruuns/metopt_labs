@@ -81,6 +81,14 @@ public abstract class BiMinimalizer {
         return ans;
     }
 
+    protected double dist(List<Double> l, List<Double> r) {
+        double dist = 0.0;
+        for (int i = 0; i < dimensions; i++) {
+            dist += Math.pow(l.get(i) - r.get(i), 2);
+        }
+        return dist;
+    }
+
     List<Double> countGradient(List<Double> list) {
         return sum(matrixVectorMul(a, list), b);
     }
@@ -93,6 +101,10 @@ public abstract class BiMinimalizer {
         return ans;
     }
 
+//    List<List<Double>> generateMatrix(int conditionality, int dimensions) {
+//
+//    }
+
     BiMinimalizer(List<List<Double>> a, List<Double> b, double c, int dimensions) {
         this.a = a;
         this.b = b;
@@ -102,17 +114,24 @@ public abstract class BiMinimalizer {
 
     abstract List<Double> minimalize();
 
+    public static void printMinimalizer(BiMinimalizer biMinimalizer) {
+        System.out.println(biMinimalizer.apply(List.of(0.0, 0.0)));
+        System.out.println(biMinimalizer.countGradient(List.of(0.0, 0.0)));
+        List<Double> x = biMinimalizer.minimalize();
+        for (double x_i : x) {
+            System.out.println(x_i);
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
         //4 * x * x + 3 * y * y + 4 * y * x + 5 * x + 6 * y + 9
         List<List<Double>> a = List.of(List.of(8.0, 4.0), List.of(4.0, 6.0));
         List<Double> b = List.of(5.0, 6.0);
         double c = 9;
-        BiMinimalizer biMinimalizer = new SteepestDescent(a, b, c, 2);
-        System.out.println(biMinimalizer.apply(List.of(1.0, 1.0)));
-        System.out.println(biMinimalizer.countGradient(List.of(1.0, 1.0)));
-        List<Double> x = biMinimalizer.minimalize();
-        for (double x_i : x) {
-            System.out.println(x_i);
-        }
+        printMinimalizer(new GradientDescent(a, b, c, 2));
+        printMinimalizer(new SteepestDescent(a, b, c, 2));
+        printMinimalizer(new FletcherReeves(a, b, c, 2));
+
     }
 }
