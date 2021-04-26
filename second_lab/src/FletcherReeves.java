@@ -35,7 +35,7 @@ public class FletcherReeves extends BiMinimalizer {
             gradK = gradK1;
             iter++;
         }
-        System.out.println(iter);
+        System.out.print(iter + " ");
         return xk.getVector();
     }
 }

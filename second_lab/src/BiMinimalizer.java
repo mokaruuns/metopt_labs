@@ -69,7 +69,11 @@ public abstract class BiMinimalizer {
 
 
     static List<Double> generateDaigMatrix(int conditionality, int dimensions) {
-        List<Double> temp = new ArrayList<>(Collections.nCopies(dimensions - 1, 1.0));
+        List<Double> temp = new ArrayList<>();
+        temp.add(1.0);
+        for (int i = 1; i < dimensions - 1; i++) {
+            temp.add((Math.random() * (conditionality - temp.get(i - 1))) + temp.get(i - 1));
+        }
         temp.add((double) conditionality);
         return temp;
     }
@@ -106,19 +110,22 @@ public abstract class BiMinimalizer {
         for (Integer dimension : dimensions) {
             for (Integer conditionality : conditionalities) {
                 System.out.println("d = " + dimension + ", c = " + conditionality);
-                Matrix a = new DiagMatrix(generateDaigMatrix(conditionality, dimension));
-                NumberVector b = new NumberVector(Collections.nCopies(dimension, 0.0));
-                double c = 0;
-                printAllMinimalizers(a, b, c, dimension);
+                for (int i = 1; i < 6; i++) {
+                    Matrix a = new DiagMatrix(generateDaigMatrix(conditionality, dimension));
+                    NumberVector b = new NumberVector(Collections.nCopies(dimension, 0.0));
+                    double c = 0;
+                    printAllMinimalizers(a, b, c, dimension);
+                }
+                System.out.println();
+                System.out.println();
             }
         }
     }
 
     private static void printAllMinimalizers(Matrix a, NumberVector b, double c, int dimension) {
 //        printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
-//        printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
-        printMinimalizer(new FletcherReeves(a, b, c, dimension), dimension);
-        System.out.println();
+        printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
+//        printMinimalizer(new FletcherReeves(a, b, c, dimension), dimension);
     }
 
     private static void printFirst() {
