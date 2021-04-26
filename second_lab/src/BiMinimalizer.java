@@ -1,8 +1,6 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class BiMinimalizer {
 
@@ -47,16 +45,6 @@ public abstract class BiMinimalizer {
         return Math.sqrt(l.mulOnVector(l));
     }
 
-    protected double mul(List<Double> l, List<Double> r) {
-        checkDim(l);
-        checkDim(r);
-        double ans = 0;
-        for (int i = 0; i < dimensions; i++) {
-            ans += l.get(i) * r.get(i);
-        }
-        return ans;
-    }
-
     protected List<Double> sum(List<Double> l, List<Double> r) {
         checkDim(l);
         checkDim(r);
@@ -79,15 +67,8 @@ public abstract class BiMinimalizer {
         return a.mulOnVector(list).addVector(b);
     }
 
-    private double partDiff(List<Double> list, int i) {
-        double ans = b.get(i);
-        for (int j = 0; j < dimensions; j++) {
-            ans += a.get(i, j) * list.get(j);
-        }
-        return ans;
-    }
 
-    static List<Double> generateMatrix(int conditionality, int dimensions) {
+    static List<Double> generateDaigMatrix(int conditionality, int dimensions) {
         List<Double> temp = new ArrayList<>(Collections.nCopies(dimensions - 1, 1.0));
         temp.add((double) conditionality);
         return temp;
@@ -113,26 +94,45 @@ public abstract class BiMinimalizer {
 //        System.out.println(biMinimalizer.apply(Collections.nCopies(dimensions, 1.0)));
 //        System.out.println(biMinimalizer.countGradient(Collections.nCopies(dimensions, 1.0)));
         List<Double> x = biMinimalizer.minimalize();
-        System.out.println(biMinimalizer.apply(x));
+//        System.out.println(biMinimalizer.apply(x));
 //        for (double x_i : x) {
 //            System.out.println(x_i);
 //        }
-        System.out.println();
     }
 
-    public static void main(String[] args) {
+    public static void printDiag() {
         List<Integer> dimensions = List.of(10, 100, 1000, 10000);
-        List<Integer> conditionalities = List.of(10, 100, 1000);
+        List<Integer> conditionalities = List.of(1, 5, 10, 20, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000);
         for (Integer dimension : dimensions) {
             for (Integer conditionality : conditionalities) {
                 System.out.println("d = " + dimension + ", c = " + conditionality);
-                Matrix a = new DiagMatrix(generateMatrix(conditionality, dimension));
+                Matrix a = new DiagMatrix(generateDaigMatrix(conditionality, dimension));
                 NumberVector b = new NumberVector(Collections.nCopies(dimension, 0.0));
                 double c = 0;
-                printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
-                printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
-                printMinimalizer(new FletcherReeves(a, b, c, dimension), dimension);
+                printAllMinimalizers(a, b, c, dimension);
             }
         }
     }
+
+    private static void printAllMinimalizers(Matrix a, NumberVector b, double c, int dimension) {
+//        printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
+//        printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
+        printMinimalizer(new FletcherReeves(a, b, c, dimension), dimension);
+        System.out.println();
+    }
+
+    private static void printFirst() {
+        // 64 * x * x + 64 * y * y + 126 * x * y - 10 * x + 30 * y + 13
+        Matrix a = new UsualMatrix(List.of(List.of(128.0, 126.0), List.of(126.0, 128.0)));
+        NumberVector b = new NumberVector(List.of(-10.0, 30.0));
+        double c = 13;
+        printAllMinimalizers(a, b, c, 2);
+
+    }
+
+    public static void main(String[] args) {
+        printDiag();
+//        printFirst();
+    }
+
 }

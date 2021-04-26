@@ -33,7 +33,7 @@ public class SteepestDescent extends BiMinimalizer {
             minimalizer = new GoldenRatioMinimalizer(function, 0, 1);
             lambda = minimalizer.minimalize(0.000001);
             nextPoint = startPoint.addVector(grad.mulOnNumber(-lambda));
-            double dist = Math.sqrt(nextPoint.mulOnVector(startPoint));
+            double dist = dist(nextPoint, startPoint);
             if (dist < eps * eps && Math.abs(apply(startPoint.getVector()) - apply(nextPoint.getVector())) < eps) {
                 stop = true;
             }

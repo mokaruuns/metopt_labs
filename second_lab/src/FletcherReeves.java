@@ -6,6 +6,7 @@ public class FletcherReeves extends BiMinimalizer {
     FletcherReeves(List<List<Double>> a, List<Double> b, double c, int dimensions) {
         super(a, b, c, dimensions);
     }
+
     FletcherReeves(Matrix a, NumberVector b, double c, int dimensions) {
         super(a, b, c, dimensions);
     }
@@ -23,6 +24,7 @@ public class FletcherReeves extends BiMinimalizer {
         NumberVector pk = gradK.mulOnNumber(-1);
         double alfak = 0;
         double betak = 0;
+        int iter = 0;
         for (int i = 0; i < dimensions && mod(gradK) > eps; i++) {
             NumberVector apk = a.mulOnVector(pk);
             alfak = gradK.mulOnVector(gradK) / apk.mulOnVector(pk);
@@ -31,8 +33,9 @@ public class FletcherReeves extends BiMinimalizer {
             betak = gradK1.mulOnVector(gradK1) / gradK.mulOnVector(gradK1);
             pk = gradK1.mulOnNumber(-1).addVector(pk.mulOnNumber(betak));//sum(mulOnNumber(gradK1, -1), mulOnNumber(pk, betak));
             gradK = gradK1;
+            iter++;
         }
-        System.out.println(dimensions);
+        System.out.println(iter);
         return xk.getVector();
     }
 }

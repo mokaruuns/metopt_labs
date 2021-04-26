@@ -29,6 +29,9 @@ public class NumberVector {
     public double get(int i) {
         return vector.get(i);
     }
+    public void set(int i, double d) {
+        vector.set(i, d);
+    }
 
     public NumberVector addVector(NumberVector nv) {
         List<Double> newVector = new ArrayList<>();

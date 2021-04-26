@@ -7,6 +7,7 @@ public class GradientDescent extends BiMinimalizer {
     GradientDescent(List<List<Double>> A, List<Double> B, Double C, int dimensions) {
         super(A, B, C, dimensions);
     }
+
     GradientDescent(Matrix a, NumberVector b, double c, int dimensions) {
         super(a, b, c, dimensions);
     }
