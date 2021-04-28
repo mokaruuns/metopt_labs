@@ -21,7 +21,7 @@ public class GradientDescent extends BiMinimalizer {
     private List<Double> gradientDescent() {
         Double eps = 1e-5;
         NumberVector nextPoint;
-        NumberVector startPoint = new NumberVector(Collections.nCopies(dimensions, 0.0));
+        NumberVector startPoint = new NumberVector(Collections.nCopies(dimensions, 1.0));
         boolean stop = false;
         double lambda = 1;
         int iter = 0;
@@ -36,7 +36,7 @@ public class GradientDescent extends BiMinimalizer {
             if (apply(startPoint.getVector()) < apply(nextPoint.getVector())) {
                 lambda /= 2;
             }
-            System.out.println(startPoint.get(0) + " " + startPoint.get(1));
+//            System.out.println(startPoint.get(0) + " " + startPoint.get(1));
             startPoint = nextPoint;
             iter += 1;
         }

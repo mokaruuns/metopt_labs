@@ -100,12 +100,12 @@ public abstract class BiMinimalizer {
 //        System.out.println(biMinimalizer.apply(Collections.nCopies(dimensions, 1.0)));
 //        System.out.println(biMinimalizer.countGradient(Collections.nCopies(dimensions, 1.0)));
         List<Double> x = biMinimalizer.minimalize();
-        System.out.println();
-        System.out.println(biMinimalizer.apply(x));
-        for (double x_i : x) {
-            System.out.print(x_i + " ");
-        }
-        System.out.println();
+//        System.out.println();
+////        System.out.println(biMinimalizer.apply(x));
+////        for (double x_i : x) {
+////            System.out.print(x_i + " ");
+////        }
+//        System.out.println();
     }
 
     public static void printDiag() {
@@ -143,7 +143,7 @@ public abstract class BiMinimalizer {
     }
 
     public static void main(String[] args) {
-        printFirst();
+//        printFirst();
+        printDiag();
     }
-
 }
