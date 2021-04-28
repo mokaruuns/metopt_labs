@@ -31,12 +31,13 @@ public class SteepestDescent extends BiMinimalizer {
         Minimalizer minimalizer;
         while (!stop) {
             NumberVector grad = countGradient(startPoint);
+            NumberVector normalize = grad.normalize();
             System.out.println(startPoint.get(0) + " " + startPoint.get(1));
             NumberVector finalStartPoint = startPoint;
-            Function<Double, Double> function = l -> apply(finalStartPoint.addVector(grad.mulOnNumber(-l)).getVector());
+            Function<Double, Double> function = l -> apply(finalStartPoint.addVector(normalize.mulOnNumber(-l)).getVector());
             minimalizer = new GoldenRatioMinimalizer(function, 0, 1);
             lambda = minimalizer.minimalize(0.000001);
-            nextPoint = startPoint.addVector(grad.mulOnNumber(-lambda));
+            nextPoint = startPoint.addVector(normalize.mulOnNumber(-lambda));
             double dist = dist(nextPoint, startPoint);
             if (dist < eps * eps && Math.abs(apply(startPoint.getVector()) - apply(nextPoint.getVector())) < eps) {
                 stop = true;

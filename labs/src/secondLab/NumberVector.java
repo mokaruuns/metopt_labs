@@ -27,9 +27,15 @@ public class NumberVector {
         return res;
     }
 
+    public NumberVector normalize() {
+        double len = mulOnVector(new NumberVector(vector));
+        return mulOnNumber(1 / len);
+    }
+
     public double get(int i) {
         return vector.get(i);
     }
+
     public void set(int i, double d) {
         vector.set(i, d);
     }

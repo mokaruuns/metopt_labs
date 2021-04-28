@@ -27,7 +27,8 @@ public class GradientDescent extends BiMinimalizer {
         int iter = 0;
         while (!stop) {
             NumberVector grad = countGradient(startPoint);
-            nextPoint = startPoint.addVector(grad.mulOnNumber(-lambda));
+            NumberVector normalize = grad.normalize();
+            nextPoint = startPoint.addVector(normalize.mulOnNumber(-lambda));
             double dist = dist(nextPoint, startPoint);
             if (dist < eps * eps && Math.abs(apply(startPoint.getVector()) - apply(nextPoint.getVector())) < eps) {
                 stop = true;
