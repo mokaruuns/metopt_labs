@@ -123,8 +123,8 @@ public abstract class BiMinimalizer {
     }
 
     private static void printAllMinimalizers(Matrix a, NumberVector b, double c, int dimension) {
-        printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
-//        printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
+//        printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
+        printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
 //        printMinimalizer(new FletcherReeves(a, b, c, dimension), dimension);
     }
 
@@ -138,8 +138,8 @@ public abstract class BiMinimalizer {
     }
 
     public static void main(String[] args) {
-        printDiag();
-//        printFirst();
+        //printDiag();
+        printFirst();
     }
 
 }
