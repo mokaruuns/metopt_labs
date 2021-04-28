@@ -22,22 +22,23 @@ public class SteepestDescent extends BiMinimalizer {
     }
 
     private List<Double> steepestDescent() {
-        Double eps = 1e-7;
+        Double eps = 1e-5;
         NumberVector nextPoint;
-        NumberVector startPoint = new NumberVector(Collections.nCopies(dimensions, 1.0));
+        NumberVector startPoint = new NumberVector(Collections.nCopies(dimensions, 0.0));
         boolean stop = false;
-        double lambda = 0.01;
+        double lambda;
         int iter = 0;
         Minimalizer minimalizer;
         while (!stop) {
             NumberVector grad = countGradient(startPoint);
-            NumberVector normalize = grad.normalize();
+            grad = grad.normalize();
             System.out.println(startPoint.get(0) + " " + startPoint.get(1));
             NumberVector finalStartPoint = startPoint;
-            Function<Double, Double> function = l -> apply(finalStartPoint.addVector(normalize.mulOnNumber(-l)).getVector());
+            NumberVector finalGrad = grad;
+            Function<Double, Double> function = l -> apply(finalStartPoint.addVector(finalGrad.mulOnNumber(-l)).getVector());
             minimalizer = new GoldenRatioMinimalizer(function, 0, 1);
             lambda = minimalizer.minimalize(0.000001);
-            nextPoint = startPoint.addVector(normalize.mulOnNumber(-lambda));
+            nextPoint = startPoint.addVector(grad.mulOnNumber(-lambda));
             double dist = dist(nextPoint, startPoint);
             if (dist < eps * eps && Math.abs(apply(startPoint.getVector()) - apply(nextPoint.getVector())) < eps) {
                 stop = true;
