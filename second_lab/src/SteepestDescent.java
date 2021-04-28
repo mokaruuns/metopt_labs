@@ -1,4 +1,7 @@
-import java.util.ArrayList;
+import oneDimensionalMethods.BrentsMinimalizer;
+import oneDimensionalMethods.GoldenRatioMinimalizer;
+import oneDimensionalMethods.Minimalizer;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class SteepestDescent extends BiMinimalizer {
         Minimalizer minimalizer;
         while (!stop) {
             NumberVector grad = countGradient(startPoint);
+            System.out.println(startPoint.get(0) + " " + startPoint.get(1));
             NumberVector finalStartPoint = startPoint;
             Function<Double, Double> function = l -> apply(finalStartPoint.addVector(grad.mulOnNumber(-l)).getVector());
             minimalizer = new GoldenRatioMinimalizer(function, 0, 1);
@@ -38,6 +42,7 @@ public class SteepestDescent extends BiMinimalizer {
                 stop = true;
             }
             startPoint = nextPoint;
+
             iter += 1;
         }
         System.out.print(iter + " ");

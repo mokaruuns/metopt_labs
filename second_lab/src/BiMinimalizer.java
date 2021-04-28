@@ -128,6 +128,7 @@ public abstract class BiMinimalizer {
         printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
         printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
         printMinimalizer(new FletcherReeves(a, b, c, dimension), dimension);
+
     }
 
     private static void printFirst() {
@@ -140,7 +141,11 @@ public abstract class BiMinimalizer {
     }
 
     public static void main(String[] args) {
+<<<<<<<HEAD
 //        printDiag();
+                =======
+        //printDiag();
+>>>>>>>11197e a2411fcf1e99ee4b26021ccd2190f4baca
         printFirst();
     }
 

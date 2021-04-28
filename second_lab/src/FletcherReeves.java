@@ -30,7 +30,7 @@ public class FletcherReeves extends BiMinimalizer {
             alfak = gradK.mulOnVector(gradK) / apk.mulOnVector(pk);
             xk = xk.addVector(pk.mulOnNumber(alfak));
             NumberVector gradK1 = gradK.addVector(apk.mulOnNumber(alfak));//sum(gradK, mulOnNumber(apk, alfak));
-            betak = gradK1.mulOnVector(gradK1) / gradK.mulOnVector(gradK1);
+            betak = gradK1.mulOnVector(gradK1) / gradK.mulOnVector(gradK);
             pk = gradK1.mulOnNumber(-1).addVector(pk.mulOnNumber(betak));//sum(mulOnNumber(gradK1, -1), mulOnNumber(pk, betak));
             gradK = gradK1;
             iter++;

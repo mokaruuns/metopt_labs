@@ -1,3 +1,5 @@
+package oneDimensionalMethods;
+
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -50,10 +52,6 @@ public abstract class Minimalizer {
      */
     abstract public double minimalize(double epsilon);
 
-    protected double printBorders(double leftBorder, double rightBorder, double lastLength, double x1, double x2, double fx1, double fx2) {
-        String text = leftBorder + " " + rightBorder + " " + lastLength / (rightBorder - leftBorder) + " " + x1 + " " + fx1 + " " + x2 + " " + fx2;
-        return rightBorder - leftBorder;
-    }
 
 
     private void checkBorders(double x) {
