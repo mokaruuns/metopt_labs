@@ -36,6 +36,7 @@ public class GradientDescent extends BiMinimalizer {
             if (apply(startPoint.getVector()) < apply(nextPoint.getVector())) {
                 lambda /= 2;
             }
+
 //            System.out.println(startPoint.get(0) + " " + startPoint.get(1));
             startPoint = nextPoint;
             iter += 1;

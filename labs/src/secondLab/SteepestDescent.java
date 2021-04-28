@@ -1,6 +1,5 @@
 package secondLab;
-import firstLab.GoldenRatioMinimalizer;
-import firstLab.Minimalizer;
+import firstLab.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +35,7 @@ public class SteepestDescent extends BiMinimalizer {
             NumberVector finalStartPoint = startPoint;
             NumberVector finalGrad = grad;
             Function<Double, Double> function = l -> apply(finalStartPoint.addVector(finalGrad.mulOnNumber(-l)).getVector());
-            minimalizer = new GoldenRatioMinimalizer(function, 0, 1);
+            minimalizer = new DichotomyMinimalizer(function, 0, 1);
             lambda = minimalizer.minimalize(0.000001);
             nextPoint = startPoint.addVector(grad.mulOnNumber(-lambda));
             double dist = dist(nextPoint, startPoint);
