@@ -1,4 +1,4 @@
-package oneDimensionalMethods;
+package firstLab;
 
 import java.util.function.Function;
 
@@ -17,6 +17,7 @@ public class GoldenRatioMinimalizer extends Minimalizer {
     }
 
     private double goldenRatioMethod(double epsilon) {
+        int amountApplying = 1;
         final double tau = (Math.sqrt(5) - 1) / 2;
         double a = leftBorder;
         double b = rightBorder;
@@ -25,7 +26,10 @@ public class GoldenRatioMinimalizer extends Minimalizer {
         double fx1 = function.apply(x1);
         double fx2 = function.apply(x2);
         double currentEpsilon = (b - a) / 2;
+        double lastLenght = b - a;
         while (currentEpsilon > epsilon) {
+            amountApplying++;
+            lastLenght  = printBorders(a, b, lastLenght, x1, fx1, x2, fx2);
             if (fx1 < fx2) {
                 b = x2;
                 x2 = x1;
@@ -41,6 +45,7 @@ public class GoldenRatioMinimalizer extends Minimalizer {
             }
             currentEpsilon *= tau;
         }
+        printDependence(amountApplying, epsilon);
         return (a + b) / 2;
     }
 

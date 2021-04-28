@@ -1,3 +1,5 @@
+package secondLab;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -126,8 +128,8 @@ public abstract class BiMinimalizer {
 
     private static void printAllMinimalizers(Matrix a, NumberVector b, double c, int dimension) {
         printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
-        printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
-        printMinimalizer(new FletcherReeves(a, b, c, dimension), dimension);
+//        printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
+//        printMinimalizer(new FletcherReeves(a, b, c, dimension), dimension);
 
     }
 
@@ -141,11 +143,6 @@ public abstract class BiMinimalizer {
     }
 
     public static void main(String[] args) {
-<<<<<<<HEAD
-//        printDiag();
-                =======
-        //printDiag();
->>>>>>>11197e a2411fcf1e99ee4b26021ccd2190f4baca
         printFirst();
     }
 

@@ -1,5 +1,6 @@
+package secondLab;
+
 import java.util.List;
-import java.util.Vector;
 import java.util.stream.Collectors;
 
 public class UsualMatrix implements Matrix {

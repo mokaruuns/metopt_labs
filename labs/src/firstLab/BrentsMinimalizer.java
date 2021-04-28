@@ -1,4 +1,4 @@
-package oneDimensionalMethods;
+package firstLab;
 
 import java.util.function.Function;
 
@@ -17,7 +17,8 @@ public class BrentsMinimalizer extends Minimalizer {
     }
 
     private double brentsMethod(double epsilon) {
-
+        int amountApplying = 1;
+        //Step 1
         double a = leftBorder, b = rightBorder;
         double tau = (3 - Math.sqrt(5)) / 2;
         double x = a + (1 - tau) * (b - a);
@@ -28,12 +29,15 @@ public class BrentsMinimalizer extends Minimalizer {
         double e = d;
         double lastLenght = b - a;
         while (true) {
+            //Step 2
             if (Math.abs(x - (a + b) / 2) + (b - a) / 2 <= 2 * epsilon) {
                 break;
             }
             double g = e;
             e = d;
             double u;
+
+            //Step 3
             double optinalu = 0;
             boolean has_optinalu = false;
 
@@ -61,6 +65,9 @@ public class BrentsMinimalizer extends Minimalizer {
             u = optinalu;
             d = Math.abs(u - x);
             double fu = apply(u);
+            lastLenght = printBorders(a, b, lastLenght, u, fu);
+            amountApplying++;
+            //Step 5
             if (fu <= fx) {
                 if (u >= x) {
                     a = x;
@@ -74,6 +81,7 @@ public class BrentsMinimalizer extends Minimalizer {
                 fw = fx;
                 fx = fu;
             }
+            //Step 4
             else {
                 if (u >= x) {
                     b = u;
@@ -91,6 +99,7 @@ public class BrentsMinimalizer extends Minimalizer {
                 }
             }
         }
+//        printDependence(amountApplying, epsilon);
         return (a + b) / 2;
     }
 

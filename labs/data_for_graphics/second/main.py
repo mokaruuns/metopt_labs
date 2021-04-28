@@ -48,7 +48,7 @@ def read_data_from_files(files):
 
 
 def print_all_plots():
-    files = ['gradientDescent', 'steepestDescent', 'FletcherReeves']
+    files = ['gradientDescent', 'steepestDescent', 'secondLab.FletcherReeves']
     data = read_data_from_files(files)
     print_plot(data, files[0])
     print_plot(data, files[1])

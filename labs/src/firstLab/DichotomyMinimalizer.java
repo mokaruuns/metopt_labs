@@ -1,3 +1,5 @@
+package firstLab;
+
 import java.util.function.Function;
 
 /**

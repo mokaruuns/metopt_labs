@@ -1,3 +1,5 @@
+package firstLab;
+
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -51,7 +53,7 @@ public abstract class Minimalizer {
     abstract public double minimalize(double epsilon);
 
     protected void printDependence(int countApplying, double eps) {
-        System.out.println("Количество вычислений функции: " + countApplying + "; Логарифм точности: " + Math.log10(eps));
+//        System.out.println("Количество вычислений функции: " + countApplying + "; Логарифм точности: " + Math.log10(eps));
     }
 
     protected double printBorders(double leftBorder, double rightBorder, double lastLength, double x1, double x2, double fx1, double fx2) {
@@ -109,11 +111,11 @@ public abstract class Minimalizer {
     }
 
     private static void printAllDependence(Function<Double, Double> function, double leftBorder, double rightBorder, int count) {
-        printOneDependence("Метод дихотомии", new DichotomyMinimalizer(function, leftBorder, rightBorder), count);
-//        printOneDependence("Метод золотого сечения", new GoldenRatioMinimalizer(function, leftBorder, rightBorder), count);
-//        printOneDependence("Метод Фибоначчи", new FibonacciMinimalizer(function, leftBorder, rightBorder), count);
-//        printOneDependence("Метод парабол", new ParabolaMinimalizer(function, leftBorder, rightBorder), count);
-//        printOneDependence("Метод Брента", new BrentsMinimalizer(function, leftBorder, rightBorder), count);
+//        printOneDependence("Метод дихотомии", new DichotomyMinimalizer(function, leftBorder, rightBorder), count);
+//        printOneDependence("Метод золотого сечения", new firstLab.GoldenRatioMinimalizer(function, leftBorder, rightBorder), count);
+//        printOneDependence("Метод Фибоначчи", new firstLab.FibonacciMinimalizer(function, leftBorder, rightBorder), count);
+//        printOneDependence("Метод парабол", new firstLab.ParabolaMinimalizer(function, leftBorder, rightBorder), count);
+//        printOneDependence("Метод Брента", new firstLab.BrentsMinimalizer(function, leftBorder, rightBorder), count);
     }
 
     private static void printSmallDelimiter() {
@@ -127,16 +129,5 @@ public abstract class Minimalizer {
     }
 
     public static void main(String[] args) {
-        Function<Double, Double> unimodal = x -> x - Math.log(x);
-        printAllMinimalizers(unimodal, 0.5, 4);
-        printBigDelimiter();
-        Function<Double, Double> multimodal1 = x -> 24 * x - 25 * Math.pow(x, 2) + (35 * Math.pow(x, 3)) / 3 - (5 * Math.pow(x, 4)) / 2 + Math.pow(x, 5) / 5;
-        printAllMinimalizers(multimodal1, 1, 5);
-        printBigDelimiter();
-        Function<Double, Double> multimodal2 = x -> x * Math.cos(x * Math.PI);
-        printAllMinimalizers(multimodal2, 0, 10 * Math.PI);
-        Function<Double, Double> multimodal3 = x -> (-Math.abs(x - 5 * Math.PI) + 5 * Math.PI) * Math.cos(x * Math.PI);
-        printAllMinimalizers(multimodal3, 0, 10 * Math.PI);
-//        printAllDependence(unimodal, 0.5, 4,19); // вывод зависимости количества вычислений функции от логарифма точности
-    }
+      }
 }

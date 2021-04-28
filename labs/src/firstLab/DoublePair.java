@@ -1,3 +1,5 @@
+package firstLab;
+
 public class DoublePair {
 
     public double first;

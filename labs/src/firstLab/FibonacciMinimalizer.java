@@ -1,4 +1,4 @@
-package oneDimensionalMethods;
+package firstLab;
 
 import java.util.function.Function;
 
@@ -24,7 +24,11 @@ public class FibonacciMinimalizer extends Minimalizer {
         double x2 = a + ((double)res.fn1 / res.fn2) * (b - a);
         double fx1 = apply(x1);
         double fx2 = apply(x2);
+        int amountApplying = 2;
+        double lastLenght = b - a;
         for (long i = res.n; i > 1; i--) {
+            lastLenght = printBorders(a, b, lastLenght, x1, fx1, x2, fx2);
+            amountApplying++;
             if (fx1 > fx2) {
                 a = x1;
                 x1 = x2;
@@ -39,6 +43,7 @@ public class FibonacciMinimalizer extends Minimalizer {
                 fx1 = apply(x1);
             }
         }
+        printDependence(amountApplying, epsilon);
         return (x1 + x2) / 2;
     }
 
