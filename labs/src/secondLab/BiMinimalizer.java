@@ -127,7 +127,7 @@ public abstract class BiMinimalizer {
     }
 
     private static void printAllMinimalizers(Matrix a, NumberVector b, double c, int dimension) {
-//        printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
+        printMinimalizer(new GradientDescent(a, b, c, dimension), dimension);
         printMinimalizer(new SteepestDescent(a, b, c, dimension), dimension);
 //        printMinimalizer(new FletcherReeves(a, b, c, dimension), dimension);
 
@@ -135,11 +135,18 @@ public abstract class BiMinimalizer {
 
     private static void printFirst() {
         // 64 * x * x + 64 * y * y + 126 * x * y - 10 * x + 30 * y + 13
-        Matrix a = new UsualMatrix(List.of(List.of(128.0, 126.0), List.of(126.0, 128.0)));
-        NumberVector b = new NumberVector(List.of(-10.0, 30.0));
-        double c = 13;
+//        Matrix a = new UsualMatrix(List.of(List.of(128.0, 126.0), List.of(126.0, 128.0)));
+//        NumberVector b = new NumberVector(List.of(-10.0, 30.0));
+//        double c = 13;
+//        150 * x * x + 40 * y * y - 24 * x + 10 * y + 10
+        Matrix a = new UsualMatrix(List.of(List.of(300.0, 0.0), List.of(0.0, 80.0)));
+        NumberVector b = new NumberVector(List.of(-24.0, 10.0));
+        double c = 10;
+        //      16*x*x + 20*y*y - 4*x - 8*y + 5
+//        Matrix a = new UsualMatrix(List.of(List.of(32.0, 0.0), List.of(0.0, 40.0)));
+//        NumberVector b = new NumberVector(List.of(-4.0, -8.0));
+//        double c = 5;
         printAllMinimalizers(a, b, c, 2);
-
     }
 
     public static void main(String[] args) {
