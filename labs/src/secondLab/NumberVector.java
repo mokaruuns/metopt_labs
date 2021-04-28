@@ -28,8 +28,8 @@ public class NumberVector {
     }
 
     public NumberVector normalize() {
-        double len = mulOnVector(new NumberVector(vector));
-        return mulOnNumber(1 / len);
+        double len = Math.sqrt(mulOnVector(new NumberVector(vector)));
+        return new NumberVector(vector).mulOnNumber(1 / len);
     }
 
     public double get(int i) {

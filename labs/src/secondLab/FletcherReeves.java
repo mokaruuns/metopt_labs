@@ -21,7 +21,7 @@ public class FletcherReeves extends BiMinimalizer {
 
     private List<Double> fletcherReevesMethod() {
         double eps = 1e-7;
-        NumberVector xk = new NumberVector(Collections.nCopies(dimensions, 1.0));
+        NumberVector xk = new NumberVector(Collections.nCopies(dimensions, 0.0));
         NumberVector gradK = countGradient(xk);
         NumberVector pk = gradK.mulOnNumber(-1);
         double alfak = 0;
