@@ -3,18 +3,24 @@ import numpy
 
 
 def makeData():
-    x = numpy.arange(-1, 1, 0.01)
-    y = numpy.arange(-1, 1, 0.01)
+    x = numpy.arange(-0.1, 0.2, 0.01)
+    y = numpy.arange(-0.4, 0.1, 0.01)
     xgrid, ygrid = numpy.meshgrid(x, y)
-    zgrid = (xgrid * xgrid * 16) + (20 * ygrid * ygrid) + (0 * xgrid * ygrid) + (-4 * xgrid) + (-8 * ygrid) + 5
+    # zgrid = (xgrid * xgrid * 64) + (64 * ygrid * ygrid) + (126 * xgrid * ygrid) + (-10 * xgrid) + (30 * ygrid) + 13
+    zgrid = (xgrid * xgrid * 150) + (40 * ygrid * ygrid) + (0 * xgrid * ygrid) + (-24 * xgrid) + (10 * ygrid) + 10
+    # zgrid = (xgrid * xgrid * 16) + (20 * ygrid * ygrid) + (0 * xgrid * ygrid) + (-4 * xgrid) + (-8 * ygrid) + 5
     return xgrid, ygrid, zgrid
+
 
 def count_levels(x, y):
     z = []
     for i in range(len(x)):
-        temp = (x[i] * x[i] * 16) + (20 * y[i] * y[i]) + (0 * x[i] * y[i]) + (-4 * x[i]) + (-8 * y[i]) + 5
+        # temp = (x[i] * x[i] * 64) + (64 * y[i] * y[i]) + (126 * x[i] * y[i]) + (-10 * x[i]) + (30 * y[i]) + 13
+        temp = (x[i] * x[i] * 150) + (40 * y[i] * y[i]) + (0 * x[i] * y[i]) + (-24 * x[i]) + (10 * y[i]) + 10
+        # temp = (x[i] * x[i] * 16) + (20 * y[i] * y[i]) + (0 * x[i] * y[i]) + (-4 * x[i]) + (-8 * y[i]) + 5
         z.append(temp)
     return z
+
 
 l = []
 with open('text.txt') as f:
@@ -37,5 +43,13 @@ ax.spines['right'].set_visible(False)
 pylab.plt.plot(x1, y1, color='r', marker='o')
 fig.set_figwidth(12)  # ширина и
 fig.set_figheight(12)  # высота "Figure"
-pylab.plt.savefig('ThirdLevelsFunctionGradient.png')
+# pylab.plt.savefig('f1m1.png')
+# pylab.plt.savefig('f1m2.png')
+# pylab.plt.savefig('f1m3.png')
+# pylab.plt.savefig('f2m1.png')
+# pylab.plt.savefig('f2m2.png')
+pylab.plt.savefig('f2m3.png')
+# pylab.plt.savefig('f3m1.png')
+# pylab.plt.savefig('f3m2.png')
+# pylab.plt.savefig('f3m3.png')
 pylab.plt.show()

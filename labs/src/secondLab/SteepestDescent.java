@@ -24,7 +24,7 @@ public class SteepestDescent extends BiMinimalizer {
     private List<Double> steepestDescent() {
         double eps = 1e-4;
         NumberVector nextPoint;
-        NumberVector startPoint = new NumberVector(Collections.nCopies(dimensions, 1.0));
+        NumberVector startPoint = new NumberVector(Collections.nCopies(dimensions, 0.0));
         boolean stop = false;
         double lambda;
         int iter = 0;
@@ -33,7 +33,7 @@ public class SteepestDescent extends BiMinimalizer {
             NumberVector grad = countGradient(startPoint);
             double len = mod(grad);
             grad = grad.normalize();
-//            System.out.println(startPoint.get(0) + " " + startPoint.get(1));
+            System.out.println(startPoint.get(0) + " " + startPoint.get(1));
             NumberVector finalStartPoint = startPoint;
             NumberVector finalGrad = grad;
             Function<Double, Double> function = l -> apply(finalStartPoint.addVector(finalGrad.mulOnNumber(-l)).getVector());

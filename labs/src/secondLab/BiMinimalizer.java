@@ -134,7 +134,7 @@ public abstract class BiMinimalizer {
     }
 
     private static void printFirst() {
-        // 64 * x * x + 64 * y * y + 126 * x * y - 10 * x + 30 * y + 13
+//        64 * x * x + 64 * y * y + 126 * x * y - 10 * x + 30 * y + 13
 //        Matrix a = new UsualMatrix(List.of(List.of(128.0, 126.0), List.of(126.0, 128.0)));
 //        NumberVector b = new NumberVector(List.of(-10.0, 30.0));
 //        double c = 13;
@@ -150,7 +150,7 @@ public abstract class BiMinimalizer {
     }
 
     public static void main(String[] args) {
-//        printFirst();
-        printDiag();
+        printFirst();
+//        printDiag();
     }
 }
