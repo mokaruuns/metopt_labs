@@ -1,4 +1,5 @@
 package secondLab;
+
 import firstLab.*;
 
 import java.util.Collections;
@@ -21,7 +22,7 @@ public class SteepestDescent extends BiMinimalizer {
     }
 
     private List<Double> steepestDescent() {
-        Double eps = 1e-5;
+        double eps = 1e-4;
         NumberVector nextPoint;
         NumberVector startPoint = new NumberVector(Collections.nCopies(dimensions, 1.0));
         boolean stop = false;
@@ -30,16 +31,16 @@ public class SteepestDescent extends BiMinimalizer {
         Minimalizer minimalizer;
         while (!stop) {
             NumberVector grad = countGradient(startPoint);
+            double len = mod(grad);
             grad = grad.normalize();
 //            System.out.println(startPoint.get(0) + " " + startPoint.get(1));
             NumberVector finalStartPoint = startPoint;
             NumberVector finalGrad = grad;
             Function<Double, Double> function = l -> apply(finalStartPoint.addVector(finalGrad.mulOnNumber(-l)).getVector());
             minimalizer = new DichotomyMinimalizer(function, 0, 1);
-            lambda = minimalizer.minimalize(0.000001);
+            lambda = minimalizer.minimalize(0.0000001);
             nextPoint = startPoint.addVector(grad.mulOnNumber(-lambda));
-            double dist = dist(nextPoint, startPoint);
-            if (dist < eps * eps && Math.abs(apply(startPoint.getVector()) - apply(nextPoint.getVector())) < eps) {
+            if (len < eps) {
                 stop = true;
             }
             startPoint = nextPoint;

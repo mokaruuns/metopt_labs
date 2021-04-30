@@ -33,7 +33,7 @@ def print_plot(dirty_data, name):
         plt.plot(list_one, list_two, color=colors[key])
     plt.xlabel("Число обусловленности")
     plt.ylabel("Количество итераций функции")
-    plt.savefig(name + '.png')
+    # plt.savefig(name + '.png')
     plt.show()
 
 
@@ -48,7 +48,7 @@ def read_data_from_files(files):
 
 
 def print_all_plots():
-    files = ['gradientDescent', 'steepestDescent', 'secondLab.FletcherReeves']
+    files = ['gradientDescent', 'steepestDescent', 'FletcherReeves']
     data = read_data_from_files(files)
     print_plot(data, files[0])
     print_plot(data, files[1])

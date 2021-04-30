@@ -27,9 +27,12 @@ public class NumberVector {
         return res;
     }
 
+    public double norma() {
+        return Math.sqrt(mulOnVector(new NumberVector(vector)));
+    }
+
     public NumberVector normalize() {
-        double len = Math.sqrt(mulOnVector(new NumberVector(vector)));
-        return new NumberVector(vector).mulOnNumber(1 / len);
+        return new NumberVector(vector).mulOnNumber(1 / new NumberVector(vector).norma());
     }
 
     public double get(int i) {
