@@ -12,7 +12,7 @@ def get_data(dirty_data, name):
     for i, k in enumerate(n_k):
         d = int(k[0].split()[-1])
         c = int(k[1].split()[-1])
-        p = statistics.median([int(i) for i in iterations[i][0].split()])
+        p = statistics.mean([int(i) for i in iterations[i][0].split()])
         if d in data_by_name:
             data_by_name[d].update({c: p})
         else:
@@ -33,7 +33,7 @@ def print_plot(dirty_data, name):
         plt.plot(list_one, list_two, color=colors[key])
     plt.xlabel("Число обусловленности")
     plt.ylabel("Количество итераций функции")
-    # plt.savefig(name + '.png')
+    plt.savefig(name + '.png')
     plt.show()
 
 
