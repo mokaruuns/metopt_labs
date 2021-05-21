@@ -6,20 +6,39 @@ import java.util.List;
 public class DenseMatrix {
     private final List<List<Double>> matrix;
     private final List<Double> b;
-    private List<Double> x;
+    private final List<Double> x;
 
     private DenseMatrix(List<List<Double>> m, List<Double> b) {
-        this.matrix = m;
-        this.b = b;
+        List<List<Double>> temp_matrix = new ArrayList<>();
+        List<Double> temp_b = new ArrayList<>();
+        List<Double> temp_x = new ArrayList<>();
+
+        for(int i = 0; i < m.size(); i++) {
+            temp_matrix.add(new ArrayList<>());
+            temp_b.add(b.get(i));
+            temp_x.add((double) 0);
+        }
+
+        for(int i = 0; i < m.size(); i++) {
+            for (int j = 0; j < m.size(); j++) {
+                temp_matrix.get(i).add(m.get(i).get(j));
+            }
+        }
+
+        this.matrix = temp_matrix;
+        this.b = temp_b;
+        this.x = temp_x;
     }
 
     private DenseMatrix(int n, int m) {
         List<List<Double>> temp_matrix = new ArrayList<>();
         List<Double> temp_b = new ArrayList<>();
+        List<Double> temp_x = new ArrayList<>();
 
         for(int i = 0; i < n; i++){
             temp_matrix.add(new ArrayList<>());
             temp_b.add(Math.random());
+            temp_x.add((double) 0);
         }
 
         for(int i = 0; i < n; i++) {
@@ -30,6 +49,7 @@ public class DenseMatrix {
 
         this.matrix = temp_matrix;
         this.b = temp_b;
+        this.x = temp_x;
     }
 
     private int findLeaderInRowWithColumn(int row, int column) {
@@ -82,17 +102,13 @@ public class DenseMatrix {
                 }
             }
 
-            print();
-
             for(int i1 = i + 1; i1 < matrix.size(); i1++){
                 Double ratio = matrix.get(i1).get(i) / matrix.get(i).get(i);
-                System.out.println(ratio);
                 for(int j = i; j < matrix.get(i1).size(); j++){
                     Double new_elem = matrix.get(i).get(j) * ratio - matrix.get(i1).get(j);
-                    System.out.println(new_elem);
                     matrix.get(i1).set(j, new_elem);
                 }
-                Double new_elem_b = b.get(i) * ratio - b.get(i1) * ratio;
+                Double new_elem_b = b.get(i) * ratio - b.get(i1);
                 b.set(i1, new_elem_b);
             }
         }
@@ -115,6 +131,11 @@ public class DenseMatrix {
             }
             System.out.println();
         }
+        System.out.println();
+    }
+
+    private void printSolve() {
+        System.out.println(x);
     }
 
     public static void main(String[] args) {
@@ -125,5 +146,6 @@ public class DenseMatrix {
         DenseMatrix a = new DenseMatrix(temp, temp_b);
         a.print();
         a.solve();
+        a.printSolve();
     }
 }
