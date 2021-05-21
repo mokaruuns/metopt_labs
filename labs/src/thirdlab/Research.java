@@ -15,11 +15,11 @@ public class Research {
     List<List<Double>> generate(int k, int n) {
         int start = -4, end = 0;
         double sum = 0;
-        List<List<Double>> matrix = new ArrayList<>(n);
+        List<List<Double>> matrix = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             List<Double> temp = new ArrayList<>();
             for (int j = 0; j < n; j++) {
-                double random_element = start + (Math.random() * ((end - start) + 1));
+                double random_element = (int) (start + (Math.random() * ((end - start) + 1)));
                 if (i != j) {
                     sum += random_element;
                 }
@@ -53,7 +53,9 @@ public class Research {
         int n = 3;
         for (int i = 0; i < k; i++) {
             UsualMatrix matrixA = new UsualMatrix(generate(i, n));
-            NumberVector vectorX = new NumberVector(IntStream.range(1, n).mapToDouble(z -> (double) z).boxed().collect(Collectors.toList()));
+            matrixA.printMatrix();
+            NumberVector vectorX = new NumberVector(IntStream.range(1, n + 1).mapToDouble(z -> (double) z).boxed().collect(Collectors.toList()));
+            vectorX.printNumberVector();
             solve(matrixA, vectorX, n);
         }
     }

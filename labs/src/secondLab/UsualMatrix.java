@@ -42,4 +42,13 @@ public class UsualMatrix implements Matrix {
     public List<List<Double>> getListListDouble(){
         return this.matrix.stream().map(NumberVector::getVector).collect(Collectors.toList());
     }
+
+    public void printMatrix(){
+        for (NumberVector row: this.matrix) {
+            for(double c: row.getVector()) {
+                System.out.print(c + " ");
+            }
+            System.out.println();
+        }
+    }
 }

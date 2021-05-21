@@ -58,4 +58,10 @@ public class NumberVector {
     public List<Double> getVector() {
         return new ArrayList<>(vector);
     }
+    public void printNumberVector() {
+        for(double c: this.vector){
+            System.out.print(c + " ");
+        }
+        System.out.println();
+    }
 }
