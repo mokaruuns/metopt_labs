@@ -30,20 +30,27 @@ public class DenseMatrix {
         this.x = temp_x;
     }
 
-    private DenseMatrix(int n, int m) {
+    private Double rand(Double min, Double max){
+        max -= min;
+        return (Math.random() * max) + min;
+    }
+
+    private DenseMatrix(int n, int m, Double min, Double max) {
         List<List<Double>> temp_matrix = new ArrayList<>();
         List<Double> temp_b = new ArrayList<>();
         List<Double> temp_x = new ArrayList<>();
 
         for(int i = 0; i < n; i++){
             temp_matrix.add(new ArrayList<>());
-            temp_b.add(Math.random());
+            Double rnd = rand(min, max);
+            temp_b.add(rnd);
             temp_x.add((double) 0);
         }
 
         for(int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                temp_matrix.get(i).add(Math.random());
+                Double rnd = rand(min, max);
+                temp_matrix.get(i).add(rnd);
             }
         }
 
@@ -143,7 +150,7 @@ public class DenseMatrix {
                 List.of(-3.0, 2.0, 6.0),
                 List.of(5.0, -1.0, 5.0));
         List<Double> temp_b = List.of(7.0, 4.0, 6.0);
-        DenseMatrix a = new DenseMatrix(temp, temp_b);
+        DenseMatrix a = new DenseMatrix(3, 3, -20.0, 20.0);
         a.print();
         a.solve();
         a.printSolve();
