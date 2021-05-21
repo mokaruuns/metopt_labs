@@ -204,6 +204,8 @@ public class ProfileMatrix implements Matrix {
         return ans;
     }
 
+
+
     public static void main(String[] args) {
         ProfileMatrix a = new ProfileMatrix(
                 List.of(List.of(1.0, 0.0, 3.0),

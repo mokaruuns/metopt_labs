@@ -23,7 +23,6 @@ public class UsualMatrix implements Matrix {
     }
 
 
-
     @Override
     public double get(int i, int j) {
         return matrix.get(i).get(j);
@@ -38,5 +37,9 @@ public class UsualMatrix implements Matrix {
             }
         }
         return ans;
+    }
+
+    public List<List<Double>> getListListDouble(){
+        return this.matrix.stream().map(NumberVector::getVector).collect(Collectors.toList());
     }
 }
