@@ -1,7 +1,4 @@
-package thirdlab;
-
-import secondLab.Matrix;
-import secondLab.NumberVector;
+package thirdLab;
 
 import java.util.ArrayList;
 import java.util.List;

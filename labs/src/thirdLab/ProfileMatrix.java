@@ -1,10 +1,9 @@
-package thirdlab;
+package thirdLab;
 
 import secondLab.Matrix;
 import secondLab.NumberVector;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ProfileMatrix implements Matrix {
