@@ -58,7 +58,7 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
             List<Double>  nextX = add(prevX, multi(prevP, aPrev));
             List<Double> nextGrad = add(prevGrad, multi(mulApPrev, aPrev));
             double normNextGrad = norm(nextGrad);
-            double b = normNextGrad * normNextGrad / normPrevGrad / normPrevGrad;
+            double b = (normNextGrad * normNextGrad) / (normPrevGrad * normPrevGrad);
             prevP = add(multi(nextGrad, -1.0), multi(prevP, b));
             prevGrad = nextGrad;
             prevX = nextX;
