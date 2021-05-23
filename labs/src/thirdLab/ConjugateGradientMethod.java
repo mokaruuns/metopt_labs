@@ -10,11 +10,9 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
 
     private List<Double> multi(List<Double> vec, Double num){
         List<Double> res = new ArrayList<>();
-
-        for(int i = 0; i < vec.size(); i++){
-            res.add(vec.get(i) * num);
+        for (Double aDouble : vec) {
+            res.add(aDouble * num);
         }
-
         return res;
     }
 
@@ -29,7 +27,7 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
     }
 
     private Double dotProduct(List<Double> vec1, List<Double> vec2) {
-        Double res = 0.0;
+        double res = 0.0;
         for(int i = 0; i < vec1.size(); i++){
             res += vec1.get(i) * vec2.get(i);
         }
@@ -38,11 +36,11 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
     }
 
     private Double norm(List<Double> vec){
-        Double norm;
-        Double sum = 0.0;
+        double norm;
+        double sum = 0.0;
 
-        for(int i = 0; i < vec.size();i++) {
-            sum += Math.pow(vec.get(i), 2);
+        for (Double aDouble : vec) {
+            sum += Math.pow(aDouble, 2);
         }
 
         norm = Math.sqrt(sum);
@@ -61,8 +59,7 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
             List<Double> nextGrad = add(prevGrad, multi(mulApPrev, aPrev));
             Double normNextGrad = norm(nextGrad);
             Double b = normNextGrad * normNextGrad / normPrevGrad / normPrevGrad;
-            List<Double> nextP = add(multi(nextGrad, -1.0), multi(prevP, b));
-            prevP = nextP;
+            prevP = add(multi(nextGrad, -1.0), multi(prevP, b));
             prevGrad = nextGrad;
             prevX = nextX;
             normPrevGrad = normNextGrad;

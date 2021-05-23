@@ -8,18 +8,18 @@ public class DenseMatrix {
     private final List<Double> b;
     private final List<Double> x;
 
-    private DenseMatrix(List<List<Double>> m, List<Double> b) {
+    public DenseMatrix(List<List<Double>> m, List<Double> b) {
         List<List<Double>> temp_matrix = new ArrayList<>();
         List<Double> temp_b = new ArrayList<>();
         List<Double> temp_x = new ArrayList<>();
 
-        for(int i = 0; i < m.size(); i++) {
+        for (int i = 0; i < m.size(); i++) {
             temp_matrix.add(new ArrayList<>());
             temp_b.add(b.get(i));
-            temp_x.add((double) 0);
+            temp_x.add(0.0);
         }
 
-        for(int i = 0; i < m.size(); i++) {
+        for (int i = 0; i < m.size(); i++) {
             for (int j = 0; j < m.size(); j++) {
                 temp_matrix.get(i).add(m.get(i).get(j));
             }
@@ -30,7 +30,7 @@ public class DenseMatrix {
         this.x = temp_x;
     }
 
-    private Double rand(Double min, Double max){
+    private Double rand(Double min, Double max) {
         max -= min;
         return (Math.random() * max) + min;
     }
@@ -44,7 +44,7 @@ public class DenseMatrix {
             temp_matrix.add(new ArrayList<>());
             Double rnd = rand(min, max);
             temp_b.add(rnd);
-            temp_x.add((double) 0);
+            temp_x.add(0.0);
         }
 
         for (int i = 0; i < n; i++) {
@@ -60,9 +60,8 @@ public class DenseMatrix {
     }
 
     private int findLeaderInRowWithColumn(int row, int column) {
-        double maxElement = (double) 0;
+        double maxElement = 0.0;
         int numberRow = 0;
-
         for (int i = row; i < matrix.size(); i++) {
             Double cur_elem = matrix.get(i).get(column);
             if (Math.abs(cur_elem) > Math.abs(maxElement)) {
@@ -70,7 +69,6 @@ public class DenseMatrix {
                 numberRow = i;
             }
         }
-
         return numberRow;
     }
 
@@ -92,13 +90,13 @@ public class DenseMatrix {
         }
     }
 
-    private void solve() {
+    public List<Double> solve() {
         for (int i = 0; i < matrix.size() - 1; i++) {
             int rowMaxNumber = findLeaderInRowWithColumn(i, i);
 
             if (matrix.get(rowMaxNumber).get(i) == 0) {
                 System.out.println("SLAU don't have solve");
-                return;
+                return null;
             }
 
             if (rowMaxNumber > i) {
@@ -107,9 +105,9 @@ public class DenseMatrix {
                     rowMaxNumber--;
                 }
             }
-            for(int i1 = i + 1; i1 < matrix.size(); i1++){
+            for (int i1 = i + 1; i1 < matrix.size(); i1++) {
                 Double ratio = matrix.get(i1).get(i) / matrix.get(i).get(i);
-                for(int j = i; j < matrix.get(i1).size(); j++){
+                for (int j = i; j < matrix.get(i1).size(); j++) {
                     Double new_elem = matrix.get(i).get(j) * ratio - matrix.get(i1).get(j);
                     matrix.get(i1).set(j, new_elem);
                 }
@@ -127,6 +125,7 @@ public class DenseMatrix {
             Double new_value = (b.get(i) - cur_value) / matrix.get(i).get(i);
             x.set(i, new_value);
         }
+        return x;
     }
 
     private void print() {
@@ -148,7 +147,7 @@ public class DenseMatrix {
                 List.of(-3.0, 2.0, 6.0),
                 List.of(5.0, -1.0, 5.0));
         List<Double> temp_b = List.of(7.0, 4.0, 6.0);
-        DenseMatrix a = new DenseMatrix(3, 3, -20.0, 20.0);
+        DenseMatrix a = new DenseMatrix(temp, temp_b);
         a.print();
         a.solve();
         a.printSolve();
