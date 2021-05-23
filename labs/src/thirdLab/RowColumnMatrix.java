@@ -1,9 +1,10 @@
-package thirdlab;
+package thirdLab;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RowColumnMatrix {
+    private final List<Double> b;
     private final List<Double> di;
     private final List<Double> al;
     private final List<Double> au;
@@ -21,6 +22,7 @@ public class RowColumnMatrix {
     }
 
     public RowColumnMatrix(Integer n, Double min, Double max) {
+        List<Double> temp_b = new ArrayList<>();
         List<Double> temp_di = new ArrayList<>();
         List<Double> temp_al = new ArrayList<>();
         List<Double> temp_au= new ArrayList<>();
@@ -30,6 +32,8 @@ public class RowColumnMatrix {
         for(int i = 0; i < n; i++)
         {
             Double rnd = rand(min, max);
+            temp_b.add(rnd);
+            rnd = rand(min, max);
             temp_di.add(rnd);
             rnd = rand(min, max);
             temp_al.add(rnd);
@@ -40,6 +44,7 @@ public class RowColumnMatrix {
             rnd2 = randInteger(min, max);
             temp_ia.add(rnd2);
         }
+        this.b = temp_b;
         this.di = temp_di;
         this.al = temp_al;
         this.au = temp_au;
