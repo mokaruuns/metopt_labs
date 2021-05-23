@@ -20,7 +20,7 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
         List<Double> res = new ArrayList<>();
 
         for(int i = 0; i < vec1.size(); i++){
-            res.add(vec1.get(i) * vec2.get(i));
+            res.add(vec1.get(i) + vec2.get(i));
         }
 
         return res;
@@ -43,8 +43,7 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
             sum += Math.pow(aDouble, 2);
         }
 
-        norm = Math.sqrt(sum);
-        return norm;
+        return Math.sqrt(sum);
     }
 
     private List<Double> startIteration(Function func, List<Double> prevX){
@@ -54,11 +53,12 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
         List<Double> prevP = multi(prevGrad, -1.0);
         for(int i = 1; i < n && normPrevGrad >= epsilon; i++){
             List<Double> mulApPrev = func.multi(prevP);
-            Double aPrev = normPrevGrad * normPrevGrad / dotProduct(mulApPrev, prevP);
-            List<Double> nextX = add(prevX, multi(prevP, aPrev));
+            double aPrev = normPrevGrad * normPrevGrad / dotProduct(mulApPrev, prevP);
+            List<Double>  nextX = add(prevX, multi(prevP, aPrev));
             List<Double> nextGrad = add(prevGrad, multi(mulApPrev, aPrev));
-            Double normNextGrad = norm(nextGrad);
-            Double b = normNextGrad * normNextGrad / normPrevGrad / normPrevGrad;
+
+            double normNextGrad = norm(nextGrad);
+            double b = (normNextGrad * normNextGrad) / (normPrevGrad * normPrevGrad);
             prevP = add(multi(nextGrad, -1.0), multi(prevP, b));
             prevGrad = nextGrad;
             prevX = nextX;
@@ -70,9 +70,6 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
 
     public List<Double> findMinimum(Function func, List<Double> x0){
         do {
-            System.out.println(x0);
-            System.out.println(norm(func.runGradient(x0)));
-            System.out.println();
             x0 = startIteration(func, x0);
         } while(norm(func.runGradient(x0)) >= epsilon);
 

@@ -90,13 +90,13 @@ public class DenseMatrix {
         }
     }
 
-    public List<Double> solve() {
+    public void solve() {
         for (int i = 0; i < matrix.size() - 1; i++) {
             int rowMaxNumber = findLeaderInRowWithColumn(i, i);
 
             if (matrix.get(rowMaxNumber).get(i) == 0) {
                 System.out.println("SLAU don't have solve");
-                return null;
+                return;
             }
 
             if (rowMaxNumber > i) {
@@ -125,7 +125,6 @@ public class DenseMatrix {
             Double new_value = (b.get(i) - cur_value) / matrix.get(i).get(i);
             x.set(i, new_value);
         }
-        return x;
     }
 
     private void print() {
