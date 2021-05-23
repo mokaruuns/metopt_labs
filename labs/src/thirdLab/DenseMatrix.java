@@ -60,7 +60,7 @@ public class DenseMatrix {
     }
 
     private int findLeaderInRowWithColumn(int row, int column) {
-        double maxElement = (double) 0;
+        double maxElement = 0.0;
         int numberRow = 0;
 
         for (int i = row; i < matrix.size(); i++) {
@@ -82,14 +82,6 @@ public class DenseMatrix {
         Double temp_b = b.get(n);
         b.set(n, b.get(m));
         b.set(m, temp_b);
-    }
-
-    private void swapColumn(int n, int m) {
-        for (List<Double> doubles : matrix) {
-            Double temp = doubles.get(n);
-            doubles.set(n, doubles.get(m));
-            doubles.set(m, temp);
-        }
     }
 
     private void solve() {

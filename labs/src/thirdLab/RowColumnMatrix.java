@@ -40,9 +40,9 @@ public class RowColumnMatrix implements Function {
             temp_au.add(rnd);
         }
         for(int i = 0; i < n * 2; i++){
-            Integer rnd2 = randInteger(0.0, Double.valueOf(n - 1));
+            int rnd2 = randInteger(0.0, (double) (n - 1));
             temp_ja.add(rnd2);
-            rnd2 = randInteger(0.0, Double.valueOf(n - 1));
+            rnd2 = randInteger(0.0, (double) (n - 1));
             temp_ia.add(rnd2);
         }
         this.b = temp_b;
@@ -76,7 +76,7 @@ public class RowColumnMatrix implements Function {
     }
 
     private double getFromTriangle(int line, int indInLine, boolean low) {
-        Integer realInJa = ia.get(line + 1) - ia.get(line);
+        int realInJa = ia.get(line + 1) - ia.get(line);
         int offset = 0;
         for(;offset < realInJa; offset++){
             if(ja.get(ia.get(line) + offset) == indInLine){
@@ -120,7 +120,7 @@ public class RowColumnMatrix implements Function {
     }
 
     private Double dotProduct(List<Double> vec1, List<Double> vec2) {
-        Double res = 0.0;
+        double res = 0.0;
         for(int i = 0; i < vec1.size(); i++){
             res += vec1.get(i) * vec2.get(i);
         }

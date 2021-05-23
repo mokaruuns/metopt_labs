@@ -11,6 +11,7 @@ public class Main {
         for(int i = 0; i < matrix.size(); i++){
             temp.add(0.0);
         }
+        matrix.print();
         List<Double> xSolved = m.findMinimum(matrix, temp);
         System.out.println(xSolved);
     }
