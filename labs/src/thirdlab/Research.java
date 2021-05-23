@@ -37,33 +37,39 @@ public class Research {
         return matrix;
     }
 
-    public void solve(UsualMatrix matrix, NumberVector numberVector, int n) {
+    public NumberVector solve(UsualMatrix matrix, NumberVector numberVector, int n) {
         ProfileMatrix a = new ProfileMatrix(matrix.getListListDouble(), n);
         a.turnTOLU();
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                System.out.print(a.get(i, j) + " ");
-            }
-            System.out.println();
-        }
-        System.out.println(a.solveSLAU(numberVector.getVector()));
+//        for (int i = 0; i < n; i++) {
+//            for (int j = 0; j < n; j++) {
+//                System.out.print(a.get(i, j) + " ");
+//            }
+//            System.out.println();
+//        }
+        return new NumberVector(a.solveSLAU(numberVector.getVector()));
     }
 
-    public void run(int k) {
-        int n = 3;
-        for (int i = 0; i < k; i++) {
-            UsualMatrix matrixA = new UsualMatrix(generate(i, n));
-            matrixA.printMatrix();
-            NumberVector vectorX = new NumberVector(IntStream.range(1, n + 1).mapToDouble(z -> (double) z).boxed().collect(Collectors.toList()));
-            vectorX.printNumberVector();
-            solve(matrixA, vectorX, n);
-        }
+    public void run(int n, int k) {
+//        System.out.println("Размер: " + n + ", число обусловленности: " + k);
+        UsualMatrix matrixA = new UsualMatrix(generate(k, n));
+//        matrixA.printMatrix();
+        NumberVector vectorX = new NumberVector(IntStream.range(1, n + 1).mapToDouble(z -> (double) z).boxed().collect(Collectors.toList()));
+//        vectorX.printNumberVector();
+        checkLoss(n, k, vectorX, solve(matrixA, vectorX, n));
     }
 
+    private void checkLoss(int n, int k, NumberVector expectedSolution, NumberVector currentSolution) {
+        double difference = expectedSolution.addVector(currentSolution.mulOnNumber(-1)).norma();
+        System.out.println(n + " " + k + " " + difference + " " + difference / expectedSolution.norma());
+    }
 
     public static void main(String[] args) {
         Research research = new Research();
-        research.run(1);
+        for (int c = 1; c <= 3; c++) {
+            for (int k = 0; k < 10; k++) {
+                research.run((int) Math.pow(10, c), k);
+            }
+        }
     }
 
 }
