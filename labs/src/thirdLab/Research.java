@@ -1,4 +1,4 @@
-package thirdlab;
+package thirdLab;
 
 import secondLab.NumberVector;
 import secondLab.UsualMatrix;
