@@ -2,6 +2,7 @@ package thirdLab;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 public class RowColumnMatrix implements Function {
     private final List<Double> b;
@@ -11,44 +12,60 @@ public class RowColumnMatrix implements Function {
     private final List<Integer> ja;
     private final List<Integer> ia;
 
-    private Double rand(Double min, Double max){
-        max -= min;
-        return (Math.random() * max) + min;
+    public List<Double> multi(List<List<Double>> matrix, double[] vector){
+        List<Double> result = new ArrayList<>();
+        for(int i = 0; i < matrix.size(); i++) {
+            result.add(0.0);
+        }
+        for(int i = 0; i < matrix.size(); i++){
+            for (int j = 0; j < matrix.size(); j++){
+                result.set(i, result.get(i) + matrix.get(i).get(j) * vector[j]);
+            }
+        }
+
+        return result;
     }
 
-    private int randInteger(Double min, Double max){
-        max -= min;
-        return (int)((Math.random() * max) + min);
-    }
-
-    public RowColumnMatrix(Integer n, Double min, Double max) {
-        List<Double> temp_b = new ArrayList<>();
+    public RowColumnMatrix(List<List<Double>> matrix) {
+        int size = matrix.size();
+        List<Double> temp_b = multi(matrix, DoubleStream.iterate(1.0, x -> x + 1.0).limit(size).toArray());
         List<Double> temp_di = new ArrayList<>();
         List<Double> temp_al = new ArrayList<>();
-        List<Double> temp_au= new ArrayList<>();
+        List<Double> temp_au = new ArrayList<>();
         List<Integer> temp_ja = new ArrayList<>();
         List<Integer> temp_ia = new ArrayList<>();
-        for(int i = 0; i < n; i++)
+        temp_ia.add(0);
+
+        for(int i = 0; i < size; i++){
+            temp_di.add(matrix.get(i).get(i));
+            temp_ia.add(0);
+        }
+
+        temp_ia.set(0, 0);
+        temp_ia.set(1, 0);
+
+        for(int i = 1; i < size; i++)
         {
-            Double rnd = rand(min, max);
-            temp_b.add(rnd);
-            rnd = rand(min, max);
-            temp_di.add(rnd);
-            rnd = rand(min, max);
-            temp_al.add(rnd);
-            rnd = rand(min, max);
-            temp_au.add(rnd);
+            int ind = 0;
+            while(ind < i && matrix.get(i).get(ind) == 0){
+                ind++;
+            }
+
+            while(ind < i) {
+                if(matrix.get(i).get(ind) != 0) {
+                    temp_al.add(matrix.get(i).get(ind));
+                    temp_au.add(matrix.get(ind).get(i));
+                    temp_ja.add(ind);
+                }
+                ind++;
+            }
+            temp_ia.set(i + 1, temp_al.size());
         }
-        for(int i = 0; i < n * 2; i++){
-            int rnd2 = randInteger(0.0, (double) (n - 1));
-            temp_ja.add(rnd2);
-            rnd2 = randInteger(0.0, (double) (n - 1));
-            temp_ia.add(rnd2);
-        }
-        this.b = temp_b;
+
         this.di = temp_di;
         this.al = temp_al;
         this.au = temp_au;
+        this.b = temp_b;
         this.ja = temp_ja;
         this.ia = temp_ia;
     }
@@ -141,7 +158,8 @@ public class RowColumnMatrix implements Function {
             ans.add(0.0);
         for(int i = 0; i < size(); i++){
             for(int j = 0; j < size(); j++){
-                ans.set(i, ans.get(i) + getIJ(i, j) * x.get(j));
+                Double temp = getIJ(i, j) * x.get(j);
+                ans.set(i, ans.get(i) + temp);
             }
         }
 

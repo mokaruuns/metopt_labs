@@ -5,11 +5,11 @@ import java.util.List;
 
 public class Main {
     private static void solve(){
-        RowColumnMatrix matrix = new RowColumnMatrix(5, -10.0, 10.0);
+        RowColumnMatrix matrix = new RowColumnMatrix(MatrixGenerator.generateOrdinaryMatrix(5));
         Method m = new ConjugateGradientMethod(1e-7);
         List<Double> temp = new ArrayList<>();
         for(int i = 0; i < matrix.size(); i++){
-            temp.add(0.0);
+            temp.add(1.0);
         }
         matrix.print();
         List<Double> xSolved = m.findMinimum(matrix, temp);

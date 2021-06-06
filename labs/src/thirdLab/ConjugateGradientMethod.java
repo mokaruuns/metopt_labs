@@ -1,5 +1,6 @@
 package thirdLab;
 
+import javax.swing.plaf.synth.SynthUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,8 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
         List<Double> res = new ArrayList<>();
 
         for(int i = 0; i < vec1.size(); i++){
-            res.add(vec1.get(i) + vec2.get(i));
+            Double temp = vec1.get(i) + vec2.get(i);
+            res.add(temp);
         }
 
         return res;
@@ -31,12 +33,10 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
         for(int i = 0; i < vec1.size(); i++){
             res += vec1.get(i) * vec2.get(i);
         }
-
         return res;
     }
 
     private Double norm(List<Double> vec){
-        double norm;
         double sum = 0.0;
 
         for (Double aDouble : vec) {
@@ -56,15 +56,13 @@ public class ConjugateGradientMethod extends AbstractGradientMethod {
             double aPrev = normPrevGrad * normPrevGrad / dotProduct(mulApPrev, prevP);
             List<Double>  nextX = add(prevX, multi(prevP, aPrev));
             List<Double> nextGrad = add(prevGrad, multi(mulApPrev, aPrev));
-
             double normNextGrad = norm(nextGrad);
-            double b = (normNextGrad * normNextGrad) / (normPrevGrad * normPrevGrad);
+            double b = normNextGrad * normNextGrad / normPrevGrad / normPrevGrad;
             prevP = add(multi(nextGrad, -1.0), multi(prevP, b));
             prevGrad = nextGrad;
             prevX = nextX;
             normPrevGrad = normNextGrad;
         }
-
         return prevX;
     }
 
