@@ -36,6 +36,9 @@ public class RowColumnMatrix implements Function {
         List<Integer> temp_ia = new ArrayList<>();
         temp_ia.add(0);
 
+//        for (int i = 0; i < size; i++){
+//            System.out.println(matrix.get(i));
+//        }
         for(int i = 0; i < size; i++){
             temp_di.add(matrix.get(i).get(i));
             temp_ia.add(0);

@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Main {
     private static void solve(){
-        RowColumnMatrix matrix = new RowColumnMatrix(MatrixGenerator.generateOrdinaryMatrix(5));
+        RowColumnMatrix matrix = new RowColumnMatrix(MatrixGenerator.generateOrdinaryMatrix(10));
         Method m = new ConjugateGradientMethod(1e-7);
         List<Double> temp = new ArrayList<>();
         for(int i = 0; i < matrix.size(); i++){
-            temp.add(1.0);
+            temp.add(0.0);
         }
-        matrix.print();
+        //matrix.print();
         List<Double> xSolved = m.findMinimum(matrix, temp);
         System.out.println(xSolved);
     }

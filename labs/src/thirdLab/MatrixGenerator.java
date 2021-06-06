@@ -34,13 +34,9 @@ public class MatrixGenerator {
 
         for (int row = 0; row < dimension; row++) {
             for (int col = profile.get(row); col < row; col++) {
-                matrix.get(row).set(col, (double) (-RANDOM.nextInt(4) - 1));
-            }
-        }
-
-        for (int col = 0; col < dimension; ++col) {
-            for (int row = profile.get(col); row < col; ++row) {
-                matrix.get(row).set(col, (double) (-RANDOM.nextInt(4) - 1));
+                int val = -RANDOM.nextInt(4) - 1;
+                matrix.get(row).set(col, (double) val);
+                matrix.get(col).set(row, (double) val);
             }
         }
 
