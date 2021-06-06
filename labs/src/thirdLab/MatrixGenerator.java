@@ -99,4 +99,23 @@ public class MatrixGenerator {
 
         return matrix;
     }
+
+    public static List<List<Double>> generateHilbertMatrix(final int dimension) {
+        List<List<Double>> matrix = new ArrayList<>();
+
+        for(int i = 0; i < dimension; i++){
+            matrix.add(new ArrayList<>());
+            for(int j = 0; j < dimension; j++){
+                matrix.get(i).add(0.0);
+            }
+        }
+        for (int i = 1; i <= dimension; i++) {
+            for (int j = 1; j <= dimension; j++) {
+                matrix.get(i - 1).set(j - 1, (double) (1 / (i + j - 1)));
+            }
+        }
+
+
+        return matrix;
+    }
 }
