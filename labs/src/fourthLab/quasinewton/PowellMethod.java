@@ -8,11 +8,12 @@ import fourthLab.util.MatrixUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DavidonFletcherPowellMethod extends AbstractQuasiNewton {
+public class PowellMethod extends DavidonFletcherPowellMethod{
     Double alpha;
+    List<Double> deltaXdot = new ArrayList<>();
     List<Double> allAlpha = new ArrayList<>();
 
-    public DavidonFletcherPowellMethod(DoubleMultiFunction function, List<Double> x) {
+    public PowellMethod(DoubleMultiFunction function, List<Double> x) {
         super(function, x);
     }
 
@@ -20,17 +21,6 @@ public class DavidonFletcherPowellMethod extends AbstractQuasiNewton {
         var method = new GoldenRatioMinimalizer(func -> function.apply(MatrixUtils.sum(x, MatrixUtils.mul(p, func))), -10.0, 10.0);
         alpha = method.minimalize(1e-7);
         allAlpha.add(alpha);
-    }
-
-    void updateGradMatrix(List<Double> v){
-        List<List<Double>> first = MatrixUtils.mul(MatrixUtils.mul(
-                    MatrixUtils.wrapEach(deltaX), MatrixUtils.wrap(deltaX)),
-                1 / MatrixUtils.scalar(deltaX, deltaW));
-        List<List<Double>> second = MatrixUtils.mul(MatrixUtils.mul(
-                MatrixUtils.wrapEach(v), MatrixUtils.wrap(v)),
-                1 / MatrixUtils.scalar(v, deltaW));
-
-        gMatrix = MatrixUtils.subMatrix(MatrixUtils.subMatrix(gMatrix, first), second);
     }
 
     @Override
@@ -48,10 +38,10 @@ public class DavidonFletcherPowellMethod extends AbstractQuasiNewton {
         w = MatrixUtils.mul(FunctionUtils.gradient(function, x), -1.0);
         deltaW = MatrixUtils.sub(w, prevW);
         List<Double> v = MatrixUtils.mulMatrixOnVector(gMatrix, deltaW);
-        updateGradMatrix(v);
-        p = MatrixUtils.mulMatrixOnVector(gMatrix, w);
         updateAlpha();
         updateX();
+        updateGradMatrix(v);
+        p = MatrixUtils.mulMatrixOnVector(gMatrix, w);
     }
 
     @Override
@@ -59,9 +49,6 @@ public class DavidonFletcherPowellMethod extends AbstractQuasiNewton {
         List<Double> prevX = new ArrayList<>(x);
         x = MatrixUtils.sum(x, MatrixUtils.mul(p, alpha));
         deltaX = MatrixUtils.sub(x, prevX);
-    }
-
-    List<Double> getAllAlpha() {
-        return allAlpha;
+        deltaXdot = MatrixUtils.sum(deltaX, MatrixUtils.mulMatrixOnVector(gMatrix, deltaW));
     }
 }
