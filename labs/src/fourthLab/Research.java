@@ -1,19 +1,19 @@
 package fourthLab;
 
 
-import secondLab.NumberVector;
+import fourthLab.newton.AbstractNewtonMethod;
+import fourthLab.newton.ClassicNewtonMethod;
+import fourthLab.newton.DirectedNewtonMethod;
+import fourthLab.newton.MinimizerNewtonMethod;
+import fourthLab.quasinewton.DavidonFletcherPowellMethod;
 import secondLab.UsualMatrix;
 
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
-import java.lang.Math;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
 
 import static java.lang.Math.*;
 

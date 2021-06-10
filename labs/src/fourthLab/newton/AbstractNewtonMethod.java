@@ -1,4 +1,4 @@
-package fourthLab;
+package fourthLab.newton;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +10,7 @@ public abstract class AbstractNewtonMethod {
     final protected Function<List<Double>, Double> function;
     final protected List<Function<List<Double>, Double>> gradient;
     final protected List<List<Function<List<Double>, Double>>> hessian;
-    protected List<List<Double>> lastIterations;
+    public List<List<Double>> lastIterations;
     protected final int n;
 
     /**
@@ -75,5 +75,5 @@ public abstract class AbstractNewtonMethod {
      * @param x0 initial approximation
      * @return function's minimum
      */
-    abstract List<Double> run(List<Double> x0, double eps);
+    public abstract List<Double> run(List<Double> x0, double eps);
 }

@@ -1,6 +1,5 @@
-package fourthLab;
+package fourthLab.newton;
 
-import firstLab.BrentsMinimalizer;
 import firstLab.GoldenRatioMinimalizer;
 import secondLab.NumberVector;
 import thirdLab.ProfileMatrix;
@@ -8,7 +7,6 @@ import thirdLab.ProfileMatrix;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class MinimizerNewtonMethod extends AbstractNewtonMethod {
 
@@ -22,12 +20,12 @@ public class MinimizerNewtonMethod extends AbstractNewtonMethod {
      * @param hessian  function's hessian
      * @param n        function's dimension
      */
-    protected MinimizerNewtonMethod(Function<List<Double>, Double> function, List<Function<List<Double>, Double>> gradient, List<List<Function<List<Double>, Double>>> hessian, int n) {
+    public MinimizerNewtonMethod(Function<List<Double>, Double> function, List<Function<List<Double>, Double>> gradient, List<List<Function<List<Double>, Double>>> hessian, int n) {
         super(function, gradient, hessian, n);
     }
 
     @Override
-    List<Double> run(List<Double> x0, double eps) {
+    public List<Double> run(List<Double> x0, double eps) {
         lastIterations = new ArrayList<>();
         return minimizerNewtonMethod(x0, eps);
     }

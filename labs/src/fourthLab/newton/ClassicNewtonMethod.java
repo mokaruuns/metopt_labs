@@ -1,14 +1,12 @@
-package fourthLab;
+package fourthLab.newton;
 
 import secondLab.NumberVector;
 import thirdLab.ProfileMatrix;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.lang.System;
-import java.util.stream.Collectors;
 
 
 public class ClassicNewtonMethod extends AbstractNewtonMethod {
@@ -24,12 +22,12 @@ public class ClassicNewtonMethod extends AbstractNewtonMethod {
      * @param hessian  function's hessian
      * @param n        function's dimension
      */
-    protected ClassicNewtonMethod(Function<List<Double>, Double> function, List<Function<List<Double>, Double>> gradient, List<List<Function<List<Double>, Double>>> hessian, int n) {
+    public ClassicNewtonMethod(Function<List<Double>, Double> function, List<Function<List<Double>, Double>> gradient, List<List<Function<List<Double>, Double>>> hessian, int n) {
         super(function, gradient, hessian, n);
     }
 
     @Override
-    List<Double> run(List<Double> x0, double eps) {
+    public List<Double> run(List<Double> x0, double eps) {
         lastIterations = new ArrayList<>();
         return classicNewtonMethod(x0, eps);
     }
