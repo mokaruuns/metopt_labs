@@ -116,6 +116,18 @@ public class MatrixUtils {
         return res;
     }
 
+    public static List<List<Double>> sumMatrix(List<List<Double>> matrix1, List<List<Double>> matrix2){
+        List<List<Double>> res = new ArrayList<>();
+        for(int i = 0; i < matrix1.size(); i++) {
+            res.add(new ArrayList<>());
+            for(int j = 0; j < matrix1.size(); j++)
+            {
+                res.get(i).add(matrix1.get(i).get(j) + matrix2.get(i).get(j));
+            }
+        }
+
+        return res;
+    }
     public static Double scalar(List<Double> vect1, List<Double> vect2){
         Double res = 0.0;
 
@@ -148,5 +160,34 @@ public class MatrixUtils {
         }
 
         return res;
+    }
+
+    public static boolean equal(List<List<Double>> matrix1, List<List<Double>> matrix2) {
+        if(matrix1.size() != matrix2.size() || matrix1.get(0).size() != matrix2.get(0).size()) {
+            return false;
+        }
+
+        for(int i = 0; i < matrix1.size(); i++) {
+            for (int j = 0; j < matrix1.get(i).size(); j++){
+                if(matrix1.get(i).get(j) != matrix2.get(i).get(j)){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static List<List<Double>> transpose(List<List<Double>> matrix) {
+        List<List<Double>> trans = new ArrayList<>();
+
+        for(int i = 0; i < matrix.get(0).size(); i++) {
+            trans.add(new ArrayList<>());
+            for (int j = 0; j < matrix.size(); j++) {
+                trans.get(i).add(matrix.get(j).get(i));
+            }
+        }
+
+        return trans;
     }
 }

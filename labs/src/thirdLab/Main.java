@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Main {
     private static void solve(){
-        RowColumnMatrix matrix = new RowColumnMatrix(MatrixGenerator.generateOrdinaryMatrix(10));
+        RowColumnMatrix matrix = new RowColumnMatrix(MatrixGenerator.generateOrdinaryMatrix(1000));
         Method m = new ConjugateGradientMethod(1e-7);
         List<Double> temp = new ArrayList<>();
         for(int i = 0; i < matrix.size(); i++){

@@ -3,6 +3,7 @@ package fourthLab.util;
 import javax.xml.crypto.dom.DOMCryptoContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.DoubleFunction;
 
 public class FunctionUtils {
     private static final double GRADIENT_STEP = 0.00001;
@@ -21,5 +22,28 @@ public class FunctionUtils {
         }
 
         return gradient;
+    }
+
+    public static List<List<Double>> hessian(DoubleMultiFunction function, List<Double> x) {
+        List<List<Double>> hessian = new ArrayList<>();
+        for(int i = 0; i < x.size(); i++) {
+            hessian.add(new ArrayList<>());
+            for(int j = 0; j < x.size(); j++){
+                x.set(i, x.get(i) + GRADIENT_STEP);
+                x.set(j, x.get(j) + GRADIENT_STEP);
+                Double f0 = function.apply(x);
+                x.set(j, x.get(j) - 2 * GRADIENT_STEP);
+                Double f1 = function.apply(x);
+                x.set(i, x.get(i) - 2 * GRADIENT_STEP);
+                Double f2 = function.apply(x);
+                x.set(j, x.get(j) + 2 * GRADIENT_STEP);
+                Double f3 = function.apply(x);
+                x.set(i, x.get(i) + GRADIENT_STEP);
+                x.set(j, x.get(j) - GRADIENT_STEP);
+                hessian.get(i).add((f0 - f1 + f2 - f3) / (4 * GRADIENT_STEP * GRADIENT_STEP));
+            }
+        }
+
+        return hessian;
     }
 }
