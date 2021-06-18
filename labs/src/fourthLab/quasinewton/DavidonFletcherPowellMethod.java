@@ -35,7 +35,7 @@ public class DavidonFletcherPowellMethod extends AbstractQuasiNewton {
 
     @Override
     protected void firstStep() {
-        w = MatrixUtils.mul(FunctionUtils.gradient(function, x), -1.0);
+        w = MatrixUtils.mul(function.gradient(x), -1.0);
         p = w;
         deltaW = w;
         updateAlpha();
@@ -45,7 +45,7 @@ public class DavidonFletcherPowellMethod extends AbstractQuasiNewton {
     @Override
     protected void step() {
         List<Double> prevW = new ArrayList<>(w);
-        w = MatrixUtils.mul(FunctionUtils.gradient(function, x), -1.0);
+        w = MatrixUtils.mul(function.gradient(x), -1.0);
         deltaW = MatrixUtils.sub(w, prevW);
         List<Double> v = MatrixUtils.mulMatrixOnVector(gMatrix, deltaW);
         updateGradMatrix(v);

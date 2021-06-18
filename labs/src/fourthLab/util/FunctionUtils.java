@@ -8,7 +8,7 @@ import java.util.function.DoubleFunction;
 public class FunctionUtils {
     private static final double GRADIENT_STEP = 0.00001;
 
-    public static List<Double> gradient(DoubleMultiFunction function, List<Double> v){
+    public static List<Double> diffGradient(DoubleMultiFunction function, List<Double> v){
         List<Double> plusGradient = new ArrayList<>(v);
         List<Double> minusGradient = new ArrayList<>(v);
         List<Double> gradient = new ArrayList<>();
@@ -24,7 +24,7 @@ public class FunctionUtils {
         return gradient;
     }
 
-    public static List<List<Double>> hessian(DoubleMultiFunction function, List<Double> x) {
+    public static List<List<Double>> diffHessian(DoubleMultiFunction function, List<Double> x) {
         List<List<Double>> hessian = new ArrayList<>();
         for(int i = 0; i < x.size(); i++) {
             hessian.add(new ArrayList<>());

@@ -1,5 +1,6 @@
 package fourthLab.newton;
 
+import firstLab.BrentsMinimalizer;
 import firstLab.GoldenRatioMinimalizer;
 import secondLab.NumberVector;
 import thirdLab.ProfileMatrix;
@@ -26,6 +27,7 @@ public class MinimizerNewtonMethod extends AbstractNewtonMethod {
 
     @Override
     public List<Double> run(List<Double> x0, double eps) {
+        addInfo = new ArrayList<>();
         lastIterations = new ArrayList<>();
         return minimizerNewtonMethod(x0, eps);
     }
@@ -36,11 +38,14 @@ public class MinimizerNewtonMethod extends AbstractNewtonMethod {
             lastIterations.add(x);
             NumberVector gr = new NumberVector(countGradient(x));
             List<List<Double>> hs = countHessian(x);
-            s = new NumberVector(new ProfileMatrix(hs, this.n, true).swapSolve(gr.mulOnNumber(-1).getVector()));
+            NumberVector d = new NumberVector(new ProfileMatrix(hs, this.n, true).swapSolve(gr.mulOnNumber(-1).getVector()));
             NumberVector finalX = new NumberVector(x);
-            NumberVector finalS = s;
-            double r = new GoldenRatioMinimalizer(d -> apply(finalX.addVector(finalS.mulOnNumber(d)).getVector()), -1, 1).minimalize(eps);
-            s = s.mulOnNumber(r);
+            NumberVector finalD = d;
+            GoldenRatioMinimalizer minimalizer = new GoldenRatioMinimalizer(t -> apply(finalX.addVector(finalD.mulOnNumber(t)).getVector()), -1, 1);
+            double r = minimalizer.minimalize(1e-7);
+            addInfo.add(r);
+            minIters += minimalizer.getIters();
+            s = d.mulOnNumber(r);
             x = s.addVector(new NumberVector(x)).getVector();
         } while (s.norma() > eps);
         lastIterations.add(x);

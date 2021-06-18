@@ -14,8 +14,8 @@ public class ModifiedMarquardtMethod extends MarquardtMethod {
 
     @Override
     protected void step() {
-        List<Double> gradient = FunctionUtils.gradient(function, x);
-        List<List<Double>> h = FunctionUtils.hessian(function, x);
+        List<Double> gradient = function.gradient(x);
+        List<List<Double>> h = function.hessian(x);
         Double newTau = tau * BETA;
         Double value = function.apply(x);
         do {

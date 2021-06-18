@@ -1,5 +1,6 @@
 package fourthLab.newton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -7,11 +8,18 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractNewtonMethod {
 
+    public List<Double> addInfo = new ArrayList<>();
     final protected Function<List<Double>, Double> function;
     final protected List<Function<List<Double>, Double>> gradient;
     final protected List<List<Function<List<Double>, Double>>> hessian;
     public List<List<Double>> lastIterations;
     protected final int n;
+
+    public int getMinIters() {
+        return minIters;
+    }
+
+    protected int minIters;
 
     /**
      * Creates abstract Newton method optimizer.

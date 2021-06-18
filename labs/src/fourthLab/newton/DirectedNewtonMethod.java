@@ -27,6 +27,7 @@ public class DirectedNewtonMethod extends AbstractNewtonMethod {
     @Override
     public List<Double> run(List<Double> x0, double eps) {
         lastIterations = new ArrayList<>();
+        addInfo = new ArrayList<>();
         return directedNewtonMethod(x0, eps);
     }
 
@@ -36,7 +37,10 @@ public class DirectedNewtonMethod extends AbstractNewtonMethod {
         NumberVector d = new NumberVector(countGradient(x)).mulOnNumber(-1);
         NumberVector finalX1 = new NumberVector(x);
         NumberVector finalD = d;
-        double r = new GoldenRatioMinimalizer(t -> apply(finalX1.addVector(finalD.mulOnNumber(t)).getVector()), -1, 1).minimalize(eps);
+        GoldenRatioMinimalizer minimalizer =  new GoldenRatioMinimalizer(t -> apply(finalX1.addVector(finalD.mulOnNumber(t)).getVector()), -1, 1);
+        double r = minimalizer.minimalize(1e-7);
+        addInfo.add(r);
+        minIters += minimalizer.getIters();
         s = d.mulOnNumber(r);
         x = s.addVector(new NumberVector(x)).getVector();
         do {
@@ -51,7 +55,10 @@ public class DirectedNewtonMethod extends AbstractNewtonMethod {
             }
             NumberVector finalX2 = new NumberVector(x);
             NumberVector finalD1 = d;
-            r = new GoldenRatioMinimalizer(t -> apply(finalX2.addVector(finalD1.mulOnNumber(t)).getVector()), -1, 1).minimalize(eps);
+            minimalizer =  new GoldenRatioMinimalizer(t -> apply(finalX2.addVector(finalD1.mulOnNumber(t)).getVector()), -1, 1);
+            r = minimalizer.minimalize(1e-7);
+            minIters += minimalizer.getIters();
+            addInfo.add(r);
             s = d.mulOnNumber(r);
             x = s.addVector(new NumberVector(x)).getVector();
         } while (s.norma() > eps);

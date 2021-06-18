@@ -28,6 +28,7 @@ public class ClassicNewtonMethod extends AbstractNewtonMethod {
 
     @Override
     public List<Double> run(List<Double> x0, double eps) {
+        minIters = 0;
         lastIterations = new ArrayList<>();
         return classicNewtonMethod(x0, eps);
     }

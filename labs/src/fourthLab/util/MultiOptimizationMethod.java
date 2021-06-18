@@ -39,4 +39,9 @@ public abstract class MultiOptimizationMethod {
     public int getIterations() {
         return iteration;
     }
+
+    public List<List<Double>> points() {
+        return allX;
+    }
+
 }

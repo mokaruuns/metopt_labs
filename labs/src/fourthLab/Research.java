@@ -1,11 +1,11 @@
 package fourthLab;
 
 
-import fourthLab.newton.AbstractNewtonMethod;
-import fourthLab.newton.ClassicNewtonMethod;
-import fourthLab.newton.DirectedNewtonMethod;
-import fourthLab.newton.MinimizerNewtonMethod;
+import fourthLab.newton.*;
+import fourthLab.quasinewton.AbstractQuasiNewton;
 import fourthLab.quasinewton.DavidonFletcherPowellMethod;
+import fourthLab.quasinewton.PowellMethod;
+import fourthLab.util.DoubleMultiFunctionImpl;
 import secondLab.UsualMatrix;
 
 import java.util.ArrayList;
@@ -20,13 +20,13 @@ import static java.lang.Math.*;
 public class Research {
 
     final List<List<Double>> testSquare;
-    final Function<List<Double>, Double> firstFn =
+    static final Function<List<Double>, Double> firstFn =
             (l -> {
                 double x = l.get(0);
                 double y = l.get(1);
                 return 10 * x * pow(y, 2) * exp(-(pow(x, 2) + pow(y, 2)) / 4);
             });
-    final List<Function<List<Double>, Double>> firstGr = List.of(
+    static final List<Function<List<Double>, Double>> firstGr = List.of(
             l -> {
                 double x = l.get(0);
                 double y = l.get(1);
@@ -37,39 +37,105 @@ public class Research {
                 double y = l.get(1);
                 return -5 * exp(-(pow(x, 2) + pow(y, 2)) / 4) * x * y * (-4 + y * y);
             });
-
-    //(5/2 x^3 y^2 e^(1/4 (-x^2 - y^2)) - 15 x y^2 e^(1/4 (-x^2 - y^2)) | 20 y e^(1/4 (-x^2 - y^2)) - 10 x^2 y e^(1/4 (-x^2 - y^2)) - 5 y^3 e^(1/4 (-x^2 - y^2)) + 5/2 x^2 y^3 e^(1/4 (-x^2 - y^2))
-       //     20 y e^(1/4 (-x^2 - y^2)) - 10 x^2 y e^(1/4 (-x^2 - y^2)) - 5 y^3 e^(1/4 (-x^2 - y^2)) + 5/2 x^2 y^3 e^(1/4 (-x^2 - y^2)) | -25 x y^2 e^(1/4 (-x^2 - y^2)) + 20 x e^(1/4 (-x^2 - y^2)) + 5/2 x y^4 e^(1/4 (-x^2 - y^2)))
-
-    final List<List<Function<List<Double>, Double>>> firstHs = List.of(
+    static final List<List<Function<List<Double>, Double>>> firstHs = List.of(
             List.of(
                     l -> {
                         double x = l.get(0);
                         double y = l.get(1);
-                        return 5/2 * x * (x * x - 6) * y * y * exp(-(pow(x, 2) + pow(y, 2)) / 4);
+                        return 5 / 2 * x * (x * x - 6) * y * y * exp(-(pow(x, 2) + pow(y, 2)) / 4);
                     },
                     l -> {
                         double x = l.get(0);
                         double y = l.get(1);
-                        return 5/2 * (x * x - 2) * (y - 2) * y * (y + 2) * exp(-(pow(x, 2) + pow(y, 2)) / 4);
+                        return 5 / 2 * (x * x - 2) * (y - 2) * y * (y + 2) * exp(-(pow(x, 2) + pow(y, 2)) / 4);
                     }
             ),
             List.of(
                     l -> {
                         double x = l.get(0);
                         double y = l.get(1);
-                        return 5/2 * (x * x - 2) * (y - 2) * y * (y + 2) * exp(-(pow(x, 2) + pow(y, 2)) / 4);
+                        return 5 / 2 * (x * x - 2) * (y - 2) * y * (y + 2) * exp(-(pow(x, 2) + pow(y, 2)) / 4);
                     },
                     l -> {
                         double x = l.get(0);
                         double y = l.get(1);
-                        return 5/2 * x * (pow(y, 4) - 10 * y * y + 8) * exp(-(pow(x, 2) + pow(y, 2)) / 4);
+                        return 5 / 2 * x * (pow(y, 4) - 10 * y * y + 8) * exp(-(pow(x, 2) + pow(y, 2)) / 4);
                     }
             )
     );
+
     final Function<List<Double>, Double> secondFn;
     final List<Function<List<Double>, Double>> secondGr;
     final List<List<Function<List<Double>, Double>>> secondHs;
+
+    final static Function<List<Double>, Double> thirdFn = l -> {
+        double x = l.get(0);
+        double y = l.get(1);
+        return x * x + y * y - 1.2 * x * y;
+    };
+    final static List<Function<List<Double>, Double>> thirdGr = List.of(
+            l -> {
+                double x = l.get(0);
+                double y = l.get(1);
+                return 2 * x - 1.2 * y;
+            },
+            l -> {
+                double x = l.get(0);
+                double y = l.get(1);
+                return 2 * y - 1.2 * x;
+            }
+    );
+    final static List<List<Function<List<Double>, Double>>> thirdHs = List.of(
+            List.of(
+                    l -> 2.0,
+                    l -> -1.2
+            ),
+            List.of(
+                    l -> -1.2,
+                    l -> 2.0
+            )
+    );
+
+    final static Function<List<Double>, Double> fourthFn = l -> {
+        double x = l.get(0);
+        double y = l.get(1);
+        return 100 * pow(y - pow(x, 2), 2) + pow(1 - x, 2);
+    };
+    final static List<Function<List<Double>, Double>> fourthGr = List.of(
+            l -> {
+                double x = l.get(0);
+                double y = l.get(1);
+                return 2 * (-1 + x + 200 * pow(x, 3) - 200 * x * y);
+            },
+            l -> {
+                double x = l.get(0);
+                double y = l.get(1);
+                return 200 * (-pow(x, 2) + y);
+            }
+    );
+    final static List<List<Function<List<Double>, Double>>> fourthHs = List.of(
+            List.of(
+                    l -> {
+                        double x = l.get(0);
+                        double y = l.get(1);
+                        return -400 * (y - pow(x, 2)) + 800 * pow(x, 2) + 2;
+                    },
+                    l -> {
+                        double x = l.get(0);
+                        double y = l.get(1);
+                        return -400 * x;
+                    }
+            ),
+            List.of(
+                    l -> {
+                        double x = l.get(0);
+                        double y = l.get(1);
+                        return -400 * x;
+                    },
+                    l -> 200.0
+            )
+    );
+
 
     public Research() {
         testSquare = new ArrayList<>();
@@ -143,30 +209,71 @@ public class Research {
             for (List<Double> it : newtonMethod.lastIterations) {
                 printList(it);
             }
+            System.out.println("-Minimizer results");
+            printList(newtonMethod.addInfo);
+            System.out.println("-Minimizer iterations");
+            System.out.println(newtonMethod.getMinIters());
+
         } else {
             for (List<Double> it : newtonMethod.lastIterations) {
+                printList(it);
+            }
+            printList(newtonMethod.addInfo);
+            System.out.println(0);
+        }
+    }
+
+    private void runQuasiMethod(AbstractQuasiNewton newtonMethod, List<Double> list, double eps, boolean forRes) {
+        List<Double> min = newtonMethod.optimize();
+        if (!forRes) {
+            System.out.println("-Found minimum");
+            printList(min);
+            System.out.println("-Iterations");
+            for (List<Double> it : newtonMethod.points()) {
+                printList(it);
+            }
+
+        } else {
+            for (List<Double> it : newtonMethod.points()) {
                 printList(it);
             }
             System.out.println(0);
         }
     }
 
-    private void runFstClassic(List<Double> list, double eps, boolean forRes) {
+    private void runByFun(Function<List<Double>, Double> function, 
+                          List<Function<List<Double>, Double>> gradient, 
+                          List<List<Function<List<Double>, Double>>> hessian,
+                          List<Double> list, double eps, boolean forRes) {
+        int n = gradient.size();
         if (!forRes) {
             System.out.println("---Classic Newton Method---");
-            runMethod(new ClassicNewtonMethod(firstFn, firstGr, firstHs, 2), list, eps, forRes);
+            runMethod(new ClassicNewtonMethod(function, gradient, hessian, n), list, eps, forRes);
             System.out.println("---Minimize Newton Method---");
-            runMethod(new MinimizerNewtonMethod(firstFn, firstGr, firstHs, 2), list, eps, forRes);
+            runMethod(new MinimizerNewtonMethod(function, gradient, hessian, n), list, eps, forRes);
             System.out.println("---Directed Newton Method---");
-            runMethod(new DirectedNewtonMethod(firstFn, firstGr, firstHs, 2), list, eps, forRes);
+            runMethod(new DirectedNewtonMethod(function, gradient, hessian, n), list, eps, forRes);
+            System.out.println("---Steepest Method---");
+            runMethod(new Steepest(function, gradient, hessian, n), list, eps, forRes);
         } else {
-            runMethod(new ClassicNewtonMethod(firstFn, firstGr, firstHs, 2), list, eps, forRes);
-            runMethod(new MinimizerNewtonMethod(firstFn, firstGr, firstHs, 2), list, eps, forRes);
-            runMethod(new DirectedNewtonMethod(firstFn, firstGr, firstHs, 2), list, eps, forRes);
+            runMethod(new ClassicNewtonMethod(function, gradient, hessian, n), list, eps, forRes);
+            runMethod(new MinimizerNewtonMethod(function, gradient, hessian, n), list, eps, forRes);
+            runMethod(new DirectedNewtonMethod(function, gradient, hessian, n), list, eps, forRes);
+            runMethod(new Steepest(function, gradient, hessian, n), list, eps, forRes);
         }
 
     }
 
+    private void runQuasi(Function<List<Double>, Double> function,
+                          List<Function<List<Double>, Double>> gradient,
+                          List<Double> list, double eps, boolean forRes) {
+        runQuasiMethod(new PowellMethod(new DoubleMultiFunctionImpl(function, gradient, null) , list), list, eps, forRes);
+        runQuasiMethod(new DavidonFletcherPowellMethod(new DoubleMultiFunctionImpl(function, gradient, null), list), list, eps, forRes);
+    }
+
+    private void runFst(List<Double> list, double eps, boolean forRes) {
+        runByFun(secondFn, secondGr, secondHs, list, eps, forRes);
+    }
 
     //-2.0, -1.0
     //-3.0, 0.5
@@ -174,7 +281,7 @@ public class Research {
     //-1.0, -2.6
 
     public static void main(String[] args) {
-        new Research().runFstClassic(List.of(0.5, 2.1), 0.0000001, true);
+        new Research().runQuasi(fourthFn, fourthGr, List.of(0.0, 0.0), 0.00001, false);
     }
 
 }
