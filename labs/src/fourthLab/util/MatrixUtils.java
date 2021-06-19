@@ -70,7 +70,7 @@ public class MatrixUtils {
         List<List<Double>> res = new ArrayList<>();
         for (int i = 0; i < matrix1.size(); i++){
             res.add(new ArrayList<>());
-            for(int j = 0; j < matrix2.get(i).size(); j++){
+            for(int j = 0; j < matrix2.get(0).size(); j++){
                 res.get(i).add(0.0);
             }
         }
@@ -152,9 +152,7 @@ public class MatrixUtils {
 
     public static List<List<Double>> wrap(List<Double> a) {
         List<List<Double>> res = new ArrayList<>();
-        for(int i = 0; i < a.size(); i++){
-            res.add(new ArrayList<>());
-        }
+        res.add(new ArrayList<>());
         for(int i = 0; i < a.size(); i++){
             res.get(0).add(a.get(i));
         }

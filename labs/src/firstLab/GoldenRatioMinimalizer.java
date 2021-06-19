@@ -6,6 +6,7 @@ import java.util.function.Function;
  * Для переданной унимодальной функции находит точку минимума методом Золотого сечения
  */
 public class GoldenRatioMinimalizer extends Minimalizer {
+    static int iter = 0;
 
     public GoldenRatioMinimalizer(Function<Double, Double> function, double leftBorder, double rightBorder) {
         super(function, leftBorder, rightBorder);
@@ -44,9 +45,13 @@ public class GoldenRatioMinimalizer extends Minimalizer {
                 fx2 = apply(x2);
             }
             currentEpsilon *= tau;
+            iter++;
         }
         printDependence(amountApplying, epsilon);
         return (a + b) / 2;
     }
 
+    public int getIters(){
+        return iter;
+    }
 }
