@@ -32,7 +32,7 @@ public abstract class MultiOptimizationMethod {
 
     public MultiOptimizationMethod(DoubleMultiFunction function, List<Double> x) {
         this.function = function;
-        this.x = new ArrayList<>(x);
+        this.x = x;
         this.n = x.size();
     }
 

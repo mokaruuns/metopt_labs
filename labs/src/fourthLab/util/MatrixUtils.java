@@ -1,10 +1,7 @@
 package fourthLab.util;
 
-import org.w3c.dom.ls.LSException;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.DoubleFunction;
 
 public class MatrixUtils {
     public static Double norm(List<Double> v) {
@@ -16,7 +13,7 @@ public class MatrixUtils {
         return Math.sqrt(res);
     }
 
-    public static List<List<Double>> geneateI(int size) {
+    public static List<List<Double>> generateI(int size) {
         List<List<Double>> matrix = new ArrayList<>();
 
         for(int i = 0; i < size; i++) {
@@ -27,18 +24,19 @@ public class MatrixUtils {
         }
 
         for (int i = 0; i < size; i++) {
-            matrix.get(i).set(i, 0.0);
+            matrix.get(i).set(i, 1.0);
         }
 
         return matrix;
     }
 
     public static List<Double> mul(List<Double> v, Double x){
-        for(int i = 0; i < v.size(); i++) {
-            v.set(i, v.get(i) * x);
+        List<Double> res = new ArrayList<>();
+        for (Double aDouble : v) {
+            res.add(aDouble * x);
         }
 
-        return v;
+        return res;
     }
 
     public static List<List<Double>> mul(List<List<Double>> matrix, double x) {
@@ -98,10 +96,7 @@ public class MatrixUtils {
     public static List<List<Double>> subMatrix(List<List<Double>> matrix1, List<List<Double>> matrix2){
         List<List<Double>> res = new ArrayList<>();
         for(int i = 0; i < matrix1.size(); i++) {
-            res.add(new ArrayList<>());
-            for(int j = 0; j < matrix1.get(i).size(); j++) {
-                res.get(i).add(matrix1.get(i).get(j) - matrix2.get(i).get(j));
-            }
+            res.add(sub(matrix1.get(i), matrix2.get(i)));
         }
 
         return res;
@@ -119,11 +114,7 @@ public class MatrixUtils {
     public static List<List<Double>> sumMatrix(List<List<Double>> matrix1, List<List<Double>> matrix2){
         List<List<Double>> res = new ArrayList<>();
         for(int i = 0; i < matrix1.size(); i++) {
-            res.add(new ArrayList<>());
-            for(int j = 0; j < matrix1.size(); j++)
-            {
-                res.get(i).add(matrix1.get(i).get(j) + matrix2.get(i).get(j));
-            }
+            res.add(sum(matrix1.get(i), matrix2.get(i)));
         }
 
         return res;

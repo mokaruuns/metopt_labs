@@ -20,19 +20,19 @@ public class ModifiedMarquardtMethod extends MarquardtMethod {
         Double value = function.apply(x);
         do {
             newTau /= tau;
-            p = new LES(MatrixUtils.sumMatrix(h, MatrixUtils.mul(MatrixUtils.geneateI(n), newTau)),
+            p = new LES(MatrixUtils.sumMatrix(h, MatrixUtils.mul(MatrixUtils.generateI(n), newTau)),
                     MatrixUtils.mul(gradient, -1.0)).solve();
             y = MatrixUtils.sum(x, p);
         } while (function.apply(y) > value);
         updateX();
 
-        List<List<Double>> right = MatrixUtils.sumMatrix(h, MatrixUtils.mul(MatrixUtils.geneateI(n), tau));
+        List<List<Double>> right = MatrixUtils.sumMatrix(h, MatrixUtils.mul(MatrixUtils.generateI(n), tau));
         List<List<Double>> left = new Cholesky(right).decompose();
 
         int numCholesky = 0;
         while (!MatrixUtils.equal(right, MatrixUtils.mul(left, MatrixUtils.transpose(left))) && numCholesky < 10) {
             tau = Math.max(1, 2 * tau);
-            right = MatrixUtils.sumMatrix(h, MatrixUtils.mul(MatrixUtils.geneateI(n), tau));
+            right = MatrixUtils.sumMatrix(h, MatrixUtils.mul(MatrixUtils.generateI(n), tau));
             left = new Cholesky(right).decompose();
             numCholesky++;
         }

@@ -18,7 +18,7 @@ public class PowellMethod extends DavidonFletcherPowellMethod{
     }
 
     void updateAlpha() {
-        var method = new GoldenRatioMinimalizer(func -> function.apply(MatrixUtils.sum(x, MatrixUtils.mul(p, func))), -10.0, 10.0);
+        var method = new GoldenRatioMinimalizer(func -> function.apply(MatrixUtils.sum(x, MatrixUtils.mul(p, func))), -1000.0, 1000.0);
         alpha = method.minimalize(1e-7);
         allAlpha.add(alpha);
     }
@@ -34,7 +34,7 @@ public class PowellMethod extends DavidonFletcherPowellMethod{
 
     @Override
     protected void step() {
-        List<Double> prevW = new ArrayList<>(w);
+        List<Double> prevW = w;
         w = MatrixUtils.mul(function.gradient(x), -1.0);
         deltaW = MatrixUtils.sub(w, prevW);
         List<Double> v = MatrixUtils.mulMatrixOnVector(gMatrix, deltaW);
@@ -46,9 +46,18 @@ public class PowellMethod extends DavidonFletcherPowellMethod{
 
     @Override
     protected void updateXInner() {
-        List<Double> prevX = new ArrayList<>(x);
+        List<Double> prevX = x;
         x = MatrixUtils.sum(x, MatrixUtils.mul(p, alpha));
         deltaX = MatrixUtils.sub(x, prevX);
         deltaXdot = MatrixUtils.sum(deltaX, MatrixUtils.mulMatrixOnVector(gMatrix, deltaW));
+    }
+
+    @Override
+    protected void updateGradMatrix(List<Double> v) {
+        List<List<Double>> s = MatrixUtils.mul(
+                    MatrixUtils.mul(
+                        MatrixUtils.wrapEach(deltaXdot), MatrixUtils.wrap(deltaXdot)),
+                1 / MatrixUtils.scalar(deltaW, deltaXdot));
+        gMatrix = MatrixUtils.subMatrix(gMatrix, s);
     }
 }

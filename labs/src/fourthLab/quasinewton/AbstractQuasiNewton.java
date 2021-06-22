@@ -15,7 +15,7 @@ public abstract class AbstractQuasiNewton extends MultiOptimizationMethod {
 
     public AbstractQuasiNewton(DoubleMultiFunction function, List<Double> x) {
         super(function, x);
-        this.gMatrix = MatrixUtils.geneateI(x.size());
+        this.gMatrix = MatrixUtils.generateI(x.size());
     }
 
     @Override

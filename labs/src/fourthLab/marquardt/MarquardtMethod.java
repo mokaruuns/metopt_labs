@@ -26,7 +26,7 @@ public class MarquardtMethod extends MultiOptimizationMethod {
         Double value = function.apply(x);
         do {
             newTau /= tau;
-            p = new LES(MatrixUtils.sumMatrix(h, MatrixUtils.mul(MatrixUtils.geneateI(n), newTau)),
+            p = new LES(MatrixUtils.sumMatrix(h, MatrixUtils.mul(MatrixUtils.generateI(n), newTau)),
                     MatrixUtils.mul(gradient, -1.0)).solve();
             y = MatrixUtils.sum(x, p);
         } while(function.apply(y) > value);

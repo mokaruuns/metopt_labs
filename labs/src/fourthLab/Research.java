@@ -267,8 +267,8 @@ public class Research {
     private void runQuasi(Function<List<Double>, Double> function,
                           List<Function<List<Double>, Double>> gradient,
                           List<Double> list, double eps, boolean forRes) {
-        runQuasiMethod(new PowellMethod(new DoubleMultiFunctionImpl(function, gradient, null) , list), list, eps, forRes);
-        runQuasiMethod(new DavidonFletcherPowellMethod(new DoubleMultiFunctionImpl(function, gradient, null), list), list, eps, forRes);
+        runQuasiMethod(new DavidonFletcherPowellMethod(new DoubleMultiFunctionImpl(function, gradient, null) , list), list, eps, forRes);
+        runQuasiMethod(new PowellMethod(new DoubleMultiFunctionImpl(function, gradient, null), list), list, eps, forRes);
     }
 
     private void runFst(List<Double> list, double eps, boolean forRes) {
